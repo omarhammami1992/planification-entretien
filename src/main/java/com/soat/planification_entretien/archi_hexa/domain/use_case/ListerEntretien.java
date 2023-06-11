@@ -1,7 +1,7 @@
 package com.soat.planification_entretien.archi_hexa.domain.use_case;
 
-import com.soat.planification_entretien.archi_hexa.application.EntretienDetailDto;
-import com.soat.planification_entretien.archi_hexa.infrastructure.repository.EntretienRepository;
+import com.soat.planification_entretien.archi_hexa.domain.enity.EntretienDetail;
+import com.soat.planification_entretien.archi_hexa.domain.port.EntretienPort;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -9,21 +9,14 @@ import java.util.List;
 @RestController
 public class ListerEntretien {
 
-    private final EntretienRepository entretienRepository;
+    private final EntretienPort entretienPort;
 
-    public ListerEntretien(EntretienRepository entretienRepository) {
-        this.entretienRepository = entretienRepository;
+    public ListerEntretien(EntretienPort entretienPort) {
+        this.entretienPort = entretienPort;
     }
 
-    public List<EntretienDetailDto> execute() {
-        return entretienRepository.findAll().stream().map(entretien ->
-                new EntretienDetailDto(
-                        entretien.getId(),
-                        entretien.getCandidat().getEmail(),
-                        entretien.getRecruteur().getEmail(),
-                        entretien.getRecruteur().getLanguage(),
-                        entretien.getHoraireEntretien())
-        ).toList();
+    public List<EntretienDetail> execute() {
+        return entretienPort.findAll();
     }
 }
 

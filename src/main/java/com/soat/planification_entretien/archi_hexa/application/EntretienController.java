@@ -2,6 +2,7 @@ package com.soat.planification_entretien.archi_hexa.application;
 
 import java.util.List;
 
+import com.soat.planification_entretien.archi_hexa.domain.enity.EntretienDetail;
 import com.soat.planification_entretien.archi_hexa.domain.use_case.PlanifierEntretien;
 import com.soat.planification_entretien.archi_hexa.domain.use_case.ListerEntretien;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,20 @@ public class EntretienController {
 
     @GetMapping("/")
     public ResponseEntity<List<EntretienDetailDto>> findAll() {
-        return new ResponseEntity<>(listerEntretien.execute(), HttpStatus.OK);
+        final List<EntretienDetail> entretienDetails = listerEntretien.execute();
+        final List<EntretienDetailDto> entretienDetailDtos = entretienDetails.stream()
+                .map(EntretienController::toEntretienDetailDto)
+                .toList();
+        return new ResponseEntity<>(entretienDetailDtos, HttpStatus.OK);
+    }
+
+    private static EntretienDetailDto toEntretienDetailDto(EntretienDetail entretienDetail) {
+        return new EntretienDetailDto(
+                entretienDetail.id(),
+                entretienDetail.emailCandidat(),
+                entretienDetail.emailRecruteur(),
+                entretienDetail.language(),
+                entretienDetail.horaire());
     }
 
     @PostMapping("planifier")
