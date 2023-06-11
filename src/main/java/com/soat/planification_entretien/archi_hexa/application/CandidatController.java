@@ -28,20 +28,20 @@ public class CandidatController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Integer> creer(@RequestBody CandidatDto candidatDto) {
+    public ResponseEntity<Integer> creer(@RequestBody CandidatRequest candidatRequest) {
 
-        if (candidatDto.language().isBlank() || !isEmail(candidatDto.email()) || candidatDto.experienceEnAnnees().isBlank() || Integer.parseInt(candidatDto.experienceEnAnnees()) < 0) {
+        if (candidatRequest.language().isBlank() || !isEmail(candidatRequest.email()) || candidatRequest.experienceEnAnnees().isBlank() || Integer.parseInt(candidatRequest.experienceEnAnnees()) < 0) {
             return badRequest().build();
         }
 
-        Candidat candidat = toCandidat(candidatDto);
+        Candidat candidat = toCandidat(candidatRequest);
         final Integer id = creerCandidat.execute(candidat);
 
         return created(null).body(id);
     }
 
-    private static Candidat toCandidat(CandidatDto candidatDto) {
-        return new Candidat(null, candidatDto.language(), candidatDto.email(), Integer.parseInt(candidatDto.experienceEnAnnees()));
+    private static Candidat toCandidat(CandidatRequest candidatRequest) {
+        return new Candidat(null, candidatRequest.language(), candidatRequest.email(), Integer.parseInt(candidatRequest.experienceEnAnnees()));
     }
 
     private static boolean isEmail(String adresse) {

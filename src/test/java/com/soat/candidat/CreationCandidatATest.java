@@ -4,10 +4,10 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.soat.ATest;
-import com.soat.planification_entretien.archi_hexa.application.CandidatDto;
+import com.soat.planification_entretien.archi_hexa.application.CandidatRequest;
 import com.soat.planification_entretien.archi_hexa.application.CandidatController;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaCandidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.repository.CandidatRepository;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.JpaCandidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.CandidatRepository;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
@@ -26,7 +26,7 @@ public class CreationCandidatATest extends ATest {
     @Autowired
     private CandidatRepository candidatRepository;
 
-    private CandidatDto candidatDto;
+    private CandidatRequest candidatRequest;
     private Integer candidatId = 1;
 
     @Before
@@ -42,12 +42,12 @@ public class CreationCandidatATest extends ATest {
 
     @Etantdonné("un candidat {string} \\({string}) avec {string} ans d’expériences")
     public void unCandidatAvecAnsDExpériences(String language, String email, String experienceEnAnnees) {
-        candidatDto = new CandidatDto(language, email, experienceEnAnnees);
+        candidatRequest = new CandidatRequest(language, email, experienceEnAnnees);
     }
 
     @Quand("on tente d'enregistrer le candidat")
     public void onTenteDEnregistrerLeCandidat() throws JsonProcessingException {
-        String body = objectMapper.writeValueAsString(candidatDto);
+        String body = objectMapper.writeValueAsString(candidatRequest);
         initPath();
         //@formatter:off
         response = given()

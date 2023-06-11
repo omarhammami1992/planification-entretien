@@ -29,16 +29,16 @@ public class EntretienController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<EntretienDetailDto>> findAll() {
+    public ResponseEntity<List<EntretienDetailResponse>> findAll() {
         final List<EntretienDetail> entretienDetails = listerEntretien.execute();
-        final List<EntretienDetailDto> entretienDetailDtos = entretienDetails.stream()
+        final List<EntretienDetailResponse> entretienDetailResponses = entretienDetails.stream()
                 .map(EntretienController::toEntretienDetailDto)
                 .toList();
-        return new ResponseEntity<>(entretienDetailDtos, HttpStatus.OK);
+        return new ResponseEntity<>(entretienDetailResponses, HttpStatus.OK);
     }
 
-    private static EntretienDetailDto toEntretienDetailDto(EntretienDetail entretienDetail) {
-        return new EntretienDetailDto(
+    private static EntretienDetailResponse toEntretienDetailDto(EntretienDetail entretienDetail) {
+        return new EntretienDetailResponse(
                 entretienDetail.id(),
                 entretienDetail.emailCandidat(),
                 entretienDetail.emailRecruteur(),
@@ -47,9 +47,9 @@ public class EntretienController {
     }
 
     @PostMapping("planifier")
-    public ResponseEntity<Void> planifier(@RequestBody EntretienDto entretienDto) {
+    public ResponseEntity<Void> planifier(@RequestBody EntretienRequest entretienRequest) {
 
-        var planifie = planifierEntretien.execute(entretienDto.candidatId(), entretienDto.recruteurId(), entretienDto.disponibiliteDuCandidat(), entretienDto.disponibiliteDuRecruteur());
+        var planifie = planifierEntretien.execute(entretienRequest.candidatId(), entretienRequest.recruteurId(), entretienRequest.disponibiliteDuCandidat(), entretienRequest.disponibiliteDuRecruteur());
 
         if (planifie) {
             return created(null).build();

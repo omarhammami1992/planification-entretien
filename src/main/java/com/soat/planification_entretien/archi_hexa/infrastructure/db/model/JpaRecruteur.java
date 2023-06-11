@@ -1,4 +1,4 @@
-package com.soat.planification_entretien.archi_hexa.infrastructure.model;
+package com.soat.planification_entretien.archi_hexa.infrastructure.db.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class JpaCandidat {
+public class JpaRecruteur {
     @Id
     @GeneratedValue
     private Integer id;
@@ -18,17 +18,17 @@ public class JpaCandidat {
     @Column
     private Integer experienceInYears;
 
-    public JpaCandidat(String language, String email, int experienceInYears) {
+    public JpaRecruteur(String language, String email, int experienceInYears) {
         this.language = language;
         this.email = email;
         this.experienceInYears = experienceInYears;
     }
 
-    public JpaCandidat() {
+    public JpaRecruteur() {
 
     }
 
-    public JpaCandidat(Integer id, String language, String email, Integer experienceInYears) {
+    public JpaRecruteur(Integer id, String language, String email, Integer experienceInYears) {
         this.id = id;
         this.language = language;
         this.email = email;

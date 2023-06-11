@@ -26,17 +26,17 @@ public class RecruteurController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Integer> creer(@RequestBody RecruteurDto recruteurDto) {
-        if (recruteurDto.language().isBlank() || !isEmail(recruteurDto.email()) || recruteurDto.experienceEnAnnees().isBlank() || Integer.parseInt(recruteurDto.experienceEnAnnees()) < 0) {
+    public ResponseEntity<Integer> creer(@RequestBody RecruteurRequest recruteurRequest) {
+        if (recruteurRequest.language().isBlank() || !isEmail(recruteurRequest.email()) || recruteurRequest.experienceEnAnnees().isBlank() || Integer.parseInt(recruteurRequest.experienceEnAnnees()) < 0) {
             return badRequest().build();
         }
-        final Recruteur recruteur = toRecruteur(recruteurDto);
+        final Recruteur recruteur = toRecruteur(recruteurRequest);
         final Integer savedId = creerRecruteur.execute(recruteur);
         return created(null).body(savedId);
     }
 
-    private static Recruteur toRecruteur(RecruteurDto recruteurDto) {
-        return new Recruteur(null, recruteurDto.language(), recruteurDto.email(), Integer.parseInt(recruteurDto.experienceEnAnnees()));
+    private static Recruteur toRecruteur(RecruteurRequest recruteurRequest) {
+        return new Recruteur(null, recruteurRequest.language(), recruteurRequest.email(), Integer.parseInt(recruteurRequest.experienceEnAnnees()));
     }
 
     private static boolean isEmail(String adresse) {

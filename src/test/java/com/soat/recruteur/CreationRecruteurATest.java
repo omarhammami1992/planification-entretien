@@ -6,9 +6,9 @@ import java.util.Optional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.soat.ATest;
 import com.soat.planification_entretien.archi_hexa.application.RecruteurController;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaRecruteur;
-import com.soat.planification_entretien.archi_hexa.infrastructure.repository.RecruteurRepository;
-import com.soat.planification_entretien.archi_hexa.application.RecruteurDto;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.JpaRecruteur;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.RecruteurRepository;
+import com.soat.planification_entretien.archi_hexa.application.RecruteurRequest;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
@@ -27,7 +27,7 @@ public class CreationRecruteurATest extends ATest {
     @Autowired
     private RecruteurRepository recruteurRepository;
 
-    private RecruteurDto recruteurDto;
+    private RecruteurRequest recruteurRequest;
     private Integer recruteurId = 1;
 
     @Before
@@ -43,12 +43,12 @@ public class CreationRecruteurATest extends ATest {
 
     @Etantdonné("un recruteur {string} \\({string}) avec {string} ans d’expériences")
     public void unRecruteurAvecAnsDExpériences(String language, String email, String experienceEnAnnees) {
-        recruteurDto = new RecruteurDto(language, email, experienceEnAnnees);
+        recruteurRequest = new RecruteurRequest(language, email, experienceEnAnnees);
     }
 
     @Quand("on tente d'enregistrer le recruteur")
     public void onTenteDEnregistrerLeRecruteur() throws JsonProcessingException {
-        String body = objectMapper.writeValueAsString(recruteurDto);
+        String body = objectMapper.writeValueAsString(recruteurRequest);
         initPath();
         //@formatter:off
         response = given()

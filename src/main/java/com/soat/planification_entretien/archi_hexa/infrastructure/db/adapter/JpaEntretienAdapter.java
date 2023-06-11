@@ -1,15 +1,14 @@
-package com.soat.planification_entretien.archi_hexa.infrastructure.adapter;
+package com.soat.planification_entretien.archi_hexa.infrastructure.db.adapter;
 
-import com.soat.planification_entretien.archi_hexa.application.EntretienDetailDto;
 import com.soat.planification_entretien.archi_hexa.domain.enity.Candidat;
 import com.soat.planification_entretien.archi_hexa.domain.enity.Entretien;
 import com.soat.planification_entretien.archi_hexa.domain.enity.EntretienDetail;
 import com.soat.planification_entretien.archi_hexa.domain.enity.Recruteur;
 import com.soat.planification_entretien.archi_hexa.domain.port.EntretienPort;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaCandidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaEntretien;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaRecruteur;
-import com.soat.planification_entretien.archi_hexa.infrastructure.repository.EntretienRepository;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.JpaCandidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.JpaEntretien;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.JpaRecruteur;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.EntretienRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

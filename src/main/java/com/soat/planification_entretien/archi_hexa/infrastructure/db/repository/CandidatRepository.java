@@ -1,6 +1,6 @@
-package com.soat.planification_entretien.archi_hexa.infrastructure.repository;
+package com.soat.planification_entretien.archi_hexa.infrastructure.db.repository;
 
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaCandidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.JpaCandidat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

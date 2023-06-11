@@ -8,11 +8,11 @@ import java.time.format.DateTimeFormatter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.soat.ATest;
 import com.soat.planification_entretien.archi_hexa.application.EntretienController;
-import com.soat.planification_entretien.archi_hexa.application.EntretienDto;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaCandidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaEntretien;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaRecruteur;
-import com.soat.planification_entretien.archi_hexa.infrastructure.repository.EntretienRepository;
+import com.soat.planification_entretien.archi_hexa.application.EntretienRequest;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.JpaCandidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.JpaEntretien;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.JpaRecruteur;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.EntretienRepository;
 import com.soat.planification_entretien.archi_hexa.domain.port.EmailPort;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.Alors;
@@ -88,8 +88,8 @@ public class PlafinicationEntretienATest extends ATest {
 
     @Quand("on tente une planification d’entretien")
     public void onTenteUnePlanificationDEntretien() throws JsonProcessingException {
-        EntretienDto entretienDto = new EntretienDto(candidat.getId(), recruteur.getId(), disponibiliteDuCandidat, disponibiliteDuRecruteur);
-        String body = objectMapper.writeValueAsString(entretienDto);
+        EntretienRequest entretienRequest = new EntretienRequest(candidat.getId(), recruteur.getId(), disponibiliteDuCandidat, disponibiliteDuRecruteur);
+        String body = objectMapper.writeValueAsString(entretienRequest);
         initPath();
         //@formatter:off
         response = given()

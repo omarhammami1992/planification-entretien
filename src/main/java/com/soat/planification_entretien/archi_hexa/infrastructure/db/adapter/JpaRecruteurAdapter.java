@@ -1,9 +1,9 @@
-package com.soat.planification_entretien.archi_hexa.infrastructure.adapter;
+package com.soat.planification_entretien.archi_hexa.infrastructure.db.adapter;
 
 import com.soat.planification_entretien.archi_hexa.domain.enity.Recruteur;
 import com.soat.planification_entretien.archi_hexa.domain.port.RecruteurPort;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaRecruteur;
-import com.soat.planification_entretien.archi_hexa.infrastructure.repository.RecruteurRepository;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.JpaRecruteur;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.RecruteurRepository;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;

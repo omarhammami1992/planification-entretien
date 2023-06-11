@@ -1,4 +1,4 @@
-package com.soat.planification_entretien.archi_hexa.infrastructure;
+package com.soat.planification_entretien.archi_hexa.infrastructure.email;
 
 import java.time.LocalDateTime;
 

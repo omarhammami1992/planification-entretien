@@ -1,9 +1,9 @@
-package com.soat.planification_entretien.archi_hexa.infrastructure.adapter;
+package com.soat.planification_entretien.archi_hexa.infrastructure.db.adapter;
 
 import com.soat.planification_entretien.archi_hexa.domain.enity.Candidat;
 import com.soat.planification_entretien.archi_hexa.domain.port.CandidatPort;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaCandidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.repository.CandidatRepository;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.JpaCandidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.CandidatRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -18,7 +18,7 @@ public class JpaCandidatAdapter implements CandidatPort {
 
     @Override
     public Integer save(Candidat candidat) {
-        com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaCandidat JpaCandidat = toJpaCandidat(candidat);
+        JpaCandidat JpaCandidat = toJpaCandidat(candidat);
         JpaCandidat savedCandidat = candidatRepository.save(JpaCandidat);
         return savedCandidat.getId();
     }
