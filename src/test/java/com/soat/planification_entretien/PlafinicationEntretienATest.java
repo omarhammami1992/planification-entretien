@@ -13,7 +13,7 @@ import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaCandi
 import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaEntretien;
 import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaRecruteur;
 import com.soat.planification_entretien.archi_hexa.infrastructure.repository.EntretienRepository;
-import com.soat.planification_entretien.archi_hexa.domain.EmailService;
+import com.soat.planification_entretien.archi_hexa.domain.port.EmailPort;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
@@ -59,7 +59,7 @@ public class PlafinicationEntretienATest extends ATest {
     private EntretienRepository entretienRepository;
 
     @Autowired
-    private EmailService emailService;
+    private EmailPort emailPort;
 
     @Before
     @Override
@@ -115,8 +115,8 @@ public class PlafinicationEntretienATest extends ATest {
 
     @Et("un mail de confirmation est envoyé au candidat et au recruteur")
     public void unMailDeConfirmationEstEnvoyéAuCandidatEtAuRecruteur() {
-        verify(emailService).envoyerUnEmailDeConfirmationAuCandidat(candidat.getEmail(), disponibiliteDuCandidat);
-        verify(emailService).envoyerUnEmailDeConfirmationAuRecruteur(recruteur.getEmail(), disponibiliteDuCandidat);
+        verify(emailPort).envoyerUnEmailDeConfirmationAuCandidat(candidat.getEmail(), disponibiliteDuCandidat);
+        verify(emailPort).envoyerUnEmailDeConfirmationAuRecruteur(recruteur.getEmail(), disponibiliteDuCandidat);
     }
 
     @Alors("L’entretien n'est pas planifié")
@@ -130,7 +130,7 @@ public class PlafinicationEntretienATest extends ATest {
 
     @Et("aucun mail de confirmation n'est envoyé au candidat ou au recruteur")
     public void aucunMailDeConfirmationNEstEnvoyéAuCandidatOuAuRecruteur() {
-        verify(emailService, never()).envoyerUnEmailDeConfirmationAuCandidat(candidat.getEmail(), disponibiliteDuCandidat);
-        verify(emailService, never()).envoyerUnEmailDeConfirmationAuRecruteur(recruteur.getEmail(), disponibiliteDuCandidat);
+        verify(emailPort, never()).envoyerUnEmailDeConfirmationAuCandidat(candidat.getEmail(), disponibiliteDuCandidat);
+        verify(emailPort, never()).envoyerUnEmailDeConfirmationAuRecruteur(recruteur.getEmail(), disponibiliteDuCandidat);
     }
 }

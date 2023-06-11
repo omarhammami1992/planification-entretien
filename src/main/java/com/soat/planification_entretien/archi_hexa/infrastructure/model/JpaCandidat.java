@@ -28,6 +28,13 @@ public class JpaCandidat {
 
     }
 
+    public JpaCandidat(Integer id, String language, String email, Integer experienceInYears) {
+        this.id = id;
+        this.language = language;
+        this.email = email;
+        this.experienceInYears = experienceInYears;
+    }
+
     public Integer getId() {
         return id;
     }

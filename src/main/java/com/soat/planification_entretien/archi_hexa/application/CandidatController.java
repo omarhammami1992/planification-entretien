@@ -1,6 +1,6 @@
 package com.soat.planification_entretien.archi_hexa.application;
 
-import com.soat.planification_entretien.archi_hexa.domain.Candidat;
+import com.soat.planification_entretien.archi_hexa.domain.enity.Candidat;
 import com.soat.planification_entretien.archi_hexa.domain.use_case.CreerCandidat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

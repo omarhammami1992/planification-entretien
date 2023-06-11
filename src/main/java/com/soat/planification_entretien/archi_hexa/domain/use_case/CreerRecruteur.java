@@ -1,6 +1,6 @@
 package com.soat.planification_entretien.archi_hexa.domain.use_case;
 
-import com.soat.planification_entretien.archi_hexa.domain.Recruteur;
+import com.soat.planification_entretien.archi_hexa.domain.enity.Recruteur;
 import com.soat.planification_entretien.archi_hexa.domain.port.RecruteurPort;
 import org.springframework.stereotype.Service;
 

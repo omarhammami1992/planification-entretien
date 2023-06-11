@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.soat.planification_entretien.archi_hexa.domain.use_case.CreerRecruteur;
-import com.soat.planification_entretien.archi_hexa.domain.Recruteur;
+import com.soat.planification_entretien.archi_hexa.domain.enity.Recruteur;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
