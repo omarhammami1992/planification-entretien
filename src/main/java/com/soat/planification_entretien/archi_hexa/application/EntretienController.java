@@ -2,8 +2,8 @@ package com.soat.planification_entretien.archi_hexa.application;
 
 import java.util.List;
 
-import com.soat.planification_entretien.archi_hexa.domain.PlanifierEntretien;
-import com.soat.planification_entretien.archi_hexa.domain.ListerEntretien;
+import com.soat.planification_entretien.archi_hexa.domain.use_case.PlanifierEntretien;
+import com.soat.planification_entretien.archi_hexa.domain.use_case.ListerEntretien;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.soat.planification_entretien.archi_hexa.domain;
+package com.soat.planification_entretien.archi_hexa.domain.use_case;
 
 import com.soat.planification_entretien.archi_hexa.application.EntretienDetailDto;
 import com.soat.planification_entretien.archi_hexa.infrastructure.repository.EntretienRepository;

@@ -1,8 +1,9 @@
-package com.soat.planification_entretien.archi_hexa.domain;
+package com.soat.planification_entretien.archi_hexa.domain.use_case;
 
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.Candidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.Entretien;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.Recruteur;
+import com.soat.planification_entretien.archi_hexa.domain.EmailService;
+import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaCandidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaEntretien;
+import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaRecruteur;
 import com.soat.planification_entretien.archi_hexa.infrastructure.repository.CandidatRepository;
 import com.soat.planification_entretien.archi_hexa.infrastructure.repository.EntretienRepository;
 import com.soat.planification_entretien.archi_hexa.infrastructure.repository.RecruteurRepository;
@@ -25,13 +26,13 @@ public class PlanifierEntretien {
     }
 
     public boolean execute(int candidatId, int recruteurId, LocalDateTime dateEtHeureDisponibiliteDuCandidat, LocalDateTime dateEtHeureDisponibiliteDuRecruteur) {
-        Candidat candidat = candidatRepository.findById(candidatId).get();
-        Recruteur recruteur = recruteurRepository.findById(recruteurId).get();
+        JpaCandidat candidat = candidatRepository.findById(candidatId).get();
+        JpaRecruteur recruteur = recruteurRepository.findById(recruteurId).get();
 
         if (recruteur.getLanguage().equals(candidat.getLanguage())
                 && recruteur.getExperienceInYears() > candidat.getExperienceInYears()
                 && dateEtHeureDisponibiliteDuCandidat.equals(dateEtHeureDisponibiliteDuRecruteur)) {
-            Entretien entretien = Entretien.of(candidat, recruteur, dateEtHeureDisponibiliteDuRecruteur);
+            JpaEntretien entretien = JpaEntretien.of(candidat, recruteur, dateEtHeureDisponibiliteDuRecruteur);
             entretienRepository.save(entretien);
             emailService.envoyerUnEmailDeConfirmationAuCandidat(candidat.getEmail(), dateEtHeureDisponibiliteDuCandidat);
             emailService.envoyerUnEmailDeConfirmationAuRecruteur(recruteur.getEmail(), dateEtHeureDisponibiliteDuCandidat);
