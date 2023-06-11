@@ -1,17 +1,18 @@
 package com.soat.planification_entretien.archi_hexa.application;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.JpaCandidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.repository.CandidatRepository;
+import com.soat.planification_entretien.archi_hexa.domain.Candidat;
+import com.soat.planification_entretien.archi_hexa.domain.use_case.CreerCandidat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.http.ResponseEntity.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.created;
 
 @RestController
 @RequestMapping(CandidatController.PATH)
@@ -20,10 +21,10 @@ public class CandidatController {
 
     public static final String PATH = "/api/candidat";
 
-    private final CandidatRepository candidatRepository;
+    private final CreerCandidat creerCandidat;
 
-    public CandidatController(CandidatRepository candidatRepository) {
-        this.candidatRepository = candidatRepository;
+    public CandidatController(CreerCandidat creerCandidat) {
+        this.creerCandidat = creerCandidat;
     }
 
     @PostMapping("")
@@ -33,10 +34,14 @@ public class CandidatController {
             return badRequest().build();
         }
 
-        JpaCandidat candidat = new JpaCandidat(candidatDto.language(), candidatDto.email(), Integer.parseInt(candidatDto.experienceEnAnnees()));
-        JpaCandidat savedCandidat = candidatRepository.save(candidat);
+        Candidat candidat = toCandidat(candidatDto);
+        final Integer id = creerCandidat.execute(candidat);
 
-        return created(null).body(savedCandidat.getId());
+        return created(null).body(id);
+    }
+
+    private static Candidat toCandidat(CandidatDto candidatDto) {
+        return new Candidat(null, candidatDto.language(), candidatDto.email(), Integer.parseInt(candidatDto.experienceEnAnnees()));
     }
 
     private static boolean isEmail(String adresse) {
