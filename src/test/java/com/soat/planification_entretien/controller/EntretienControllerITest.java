@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.soat.planification_entretien.archi_hexa.application.EntretienController;
+import com.soat.planification_entretien.archi_hexa.application.EntretienRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
@@ -33,8 +35,8 @@ class EntretienControllerITest {
     @Test
     void name() throws JsonProcessingException {
         var dateDeDisponibiliteDuRecruteur = LocalDateTime.MAX;
-        EntretienDto entretienDto = new EntretienDto(1, 1, LocalDateTime.of(2021, 12, 30, 1, 1, 1), dateDeDisponibiliteDuRecruteur);
-        String body = objectMapper.writeValueAsString(entretienDto);
+        EntretienRequest entretienRequest = new EntretienRequest(1, 1, LocalDateTime.of(2021, 12, 30, 1, 1, 1), dateDeDisponibiliteDuRecruteur);
+        String body = objectMapper.writeValueAsString(entretienRequest);
         //@formatter:off
         given()
                 .log().all()

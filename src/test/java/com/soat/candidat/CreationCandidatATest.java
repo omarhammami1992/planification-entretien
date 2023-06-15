@@ -4,10 +4,10 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.soat.ATest;
-import com.soat.planification_entretien.controller.CandidatDto;
-import com.soat.planification_entretien.controller.CandidatController;
-import com.soat.planification_entretien.model.Candidat;
-import com.soat.planification_entretien.repository.CandidatRepository;
+import com.soat.planification_entretien.archi_hexa.application.CandidatRequest;
+import com.soat.planification_entretien.archi_hexa.application.CandidatController;
+import com.soat.planification_entretien.archi_hexa.infrastructure.model.Candidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.repository.CandidatRepository;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
@@ -20,14 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.Matchers.*;
 
 public class CreationCandidatATest extends ATest {
 
     @Autowired
     private CandidatRepository candidatRepository;
 
-    private CandidatDto candidatDto;
+    private CandidatRequest candidatDto;
     private Integer candidatId = 1;
 
     @Before
@@ -43,7 +42,7 @@ public class CreationCandidatATest extends ATest {
 
     @Etantdonné("un candidat {string} \\({string}) avec {string} ans d’expériences")
     public void unCandidatAvecAnsDExpériences(String language, String email, String experienceEnAnnees) {
-        candidatDto = new CandidatDto(language, email, experienceEnAnnees);
+        candidatDto = new CandidatRequest(language, email, experienceEnAnnees);
     }
 
     @Quand("on tente d'enregistrer le candidat")
