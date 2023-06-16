@@ -1,7 +1,7 @@
 package com.soat.planification_entretien.archi_hexa.domain.use_case;
 
 import com.soat.planification_entretien.archi_hexa.application.EntretienDetailResponse;
-import com.soat.planification_entretien.archi_hexa.infrastructure.repository.EntretienRepository;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.EntretienRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

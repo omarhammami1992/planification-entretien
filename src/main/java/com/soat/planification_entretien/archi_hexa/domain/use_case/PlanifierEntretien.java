@@ -3,12 +3,12 @@ package com.soat.planification_entretien.archi_hexa.domain.use_case;
 import java.time.LocalDateTime;
 
 import com.soat.planification_entretien.archi_hexa.domain.port.EmailPort;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.DbCandidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.DbEntretien;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.DbRecruteur;
-import com.soat.planification_entretien.archi_hexa.infrastructure.repository.CandidatRepository;
-import com.soat.planification_entretien.archi_hexa.infrastructure.repository.EntretienRepository;
-import com.soat.planification_entretien.archi_hexa.infrastructure.repository.RecruteurRepository;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.DbCandidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.DbEntretien;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.DbRecruteur;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.CandidatRepository;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.EntretienRepository;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.RecruteurRepository;
 import org.springframework.stereotype.Service;
 
 @Service
