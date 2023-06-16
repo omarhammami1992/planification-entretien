@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Candidat {
+public class DbRecruteur {
     @Id
     @GeneratedValue
     private Integer id;
@@ -18,13 +18,13 @@ public class Candidat {
     @Column
     private Integer experienceInYears;
 
-    public Candidat(String language, String email, int experienceInYears) {
+    public DbRecruteur(String language, String email, int experienceInYears) {
         this.language = language;
         this.email = email;
         this.experienceInYears = experienceInYears;
     }
 
-    public Candidat() {
+    public DbRecruteur() {
 
     }
 

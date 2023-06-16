@@ -9,41 +9,41 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Entretien {
+public class DbEntretien {
     @Id
     @GeneratedValue
     private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "candidat_id")
-    private Candidat candidat;
+    private DbCandidat candidat;
 
     @Column
     private LocalDateTime horaireEntretien;
 
     @ManyToOne
     @JoinColumn(name = "recruteur_id")
-    private Recruteur recruteur;
+    private DbRecruteur recruteur;
 
-    private Entretien(Candidat candidat, Recruteur recruteur, LocalDateTime horaire) {
+    private DbEntretien(DbCandidat candidat, DbRecruteur recruteur, LocalDateTime horaire) {
         this.candidat = candidat;
         this.recruteur = recruteur;
         this.horaireEntretien = horaire;
     }
 
-    public Entretien() {
+    public DbEntretien() {
 
     }
 
-    public static Entretien of(Candidat candidat, Recruteur recruteur, LocalDateTime horaire) {
-        return new Entretien(candidat, recruteur, horaire);
+    public static DbEntretien of(DbCandidat candidat, DbRecruteur recruteur, LocalDateTime horaire) {
+        return new DbEntretien(candidat, recruteur, horaire);
     }
 
-    public Candidat getCandidat() {
+    public DbCandidat getCandidat() {
         return candidat;
     }
 
-    public Recruteur getRecruteur() {
+    public DbRecruteur getRecruteur() {
         return recruteur;
     }
 

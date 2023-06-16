@@ -3,8 +3,8 @@ package com.soat.planification_entretien.archi_hexa.application;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.Candidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.repository.CandidatRepository;
+import com.soat.planification_entretien.archi_hexa.domain.entity.Candidat;
+import com.soat.planification_entretien.archi_hexa.domain.use_case.CreerCandidat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,28 +20,25 @@ public class CandidatController {
 
     public static final String PATH = "/api/candidat";
 
-    private final CandidatRepository candidatRepository;
+    private final CreerCandidat creerCandidat;
 
-    public CandidatController(CandidatRepository candidatRepository) {
-        this.candidatRepository = candidatRepository;
+    public CandidatController(CreerCandidat creerCandidat) {
+        this.creerCandidat = creerCandidat;
     }
 
     @PostMapping("")
-    public ResponseEntity<Integer> creer(@RequestBody CandidatRequest candidatDto) {
-
-        if (candidatDto.language().isBlank() || !isEmail(candidatDto.email()) || candidatDto.experienceEnAnnees().isBlank() || Integer.parseInt(candidatDto.experienceEnAnnees()) < 0) {
+    public ResponseEntity<Integer> creer(@RequestBody CandidatRequest candidatRequest) {
+        if (candidatRequest.isValid()) {
             return badRequest().build();
         }
+        Candidat candidat = toCandidat(candidatRequest);
 
-        Candidat candidat = new Candidat(candidatDto.language(), candidatDto.email(), Integer.parseInt(candidatDto.experienceEnAnnees()));
-        Candidat savedCandidat = candidatRepository.save(candidat);
+        final Integer savedCandidatId = creerCandidat.execute(candidat);
 
-        return created(null).body(savedCandidat.getId());
+        return created(null).body(savedCandidatId);
     }
 
-    private static boolean isEmail(String adresse) {
-        final Pattern r = Pattern.compile(EMAIL_REGEX);
-        final Matcher m = r.matcher(adresse);
-        return m.matches();
+    private static Candidat toCandidat(CandidatRequest candidatRequest) {
+        return new Candidat(null, candidatRequest.language(), candidatRequest.email(), Integer.parseInt(candidatRequest.experienceEnAnnees()));
     }
 }

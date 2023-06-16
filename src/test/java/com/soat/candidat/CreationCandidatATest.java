@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.soat.ATest;
 import com.soat.planification_entretien.archi_hexa.application.CandidatRequest;
 import com.soat.planification_entretien.archi_hexa.application.CandidatController;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.Candidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.model.DbCandidat;
 import com.soat.planification_entretien.archi_hexa.infrastructure.repository.CandidatRepository;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.Alors;
@@ -26,7 +26,7 @@ public class CreationCandidatATest extends ATest {
     @Autowired
     private CandidatRepository candidatRepository;
 
-    private CandidatRequest candidatDto;
+    private CandidatRequest candidatRequest;
     private Integer candidatId = 1;
 
     @Before
@@ -42,12 +42,12 @@ public class CreationCandidatATest extends ATest {
 
     @Etantdonné("un candidat {string} \\({string}) avec {string} ans d’expériences")
     public void unCandidatAvecAnsDExpériences(String language, String email, String experienceEnAnnees) {
-        candidatDto = new CandidatRequest(language, email, experienceEnAnnees);
+        candidatRequest = new CandidatRequest(language, email, experienceEnAnnees);
     }
 
     @Quand("on tente d'enregistrer le candidat")
     public void onTenteDEnregistrerLeCandidat() throws JsonProcessingException {
-        String body = objectMapper.writeValueAsString(candidatDto);
+        String body = objectMapper.writeValueAsString(candidatRequest);
         initPath();
         //@formatter:off
         response = given()
@@ -64,10 +64,10 @@ public class CreationCandidatATest extends ATest {
         response.then()
                 .statusCode(HttpStatus.SC_CREATED);
 
-        final Candidat candidat = candidatRepository.findById(candidatId).get();
+        final DbCandidat candidat = candidatRepository.findById(candidatId).get();
         assertThat(candidat).usingRecursiveComparison()
                 .ignoringFields("id")
-                .isEqualTo(new Candidat(language, email, Integer.parseInt(experienceEnAnnees)));
+                .isEqualTo(new DbCandidat(language, email, Integer.parseInt(experienceEnAnnees)));
     }
 
     @Alors("l'enregistrement est refusé")
@@ -78,7 +78,7 @@ public class CreationCandidatATest extends ATest {
 
     @Et("le candidat n'est pas enregistré")
     public void leCandidatNEstPasEnregistré() {
-        final Optional<Candidat> candidat = candidatRepository.findById(candidatId);
+        final Optional<DbCandidat> candidat = candidatRepository.findById(candidatId);
         assertThat(candidat).isEmpty();
     }
 }

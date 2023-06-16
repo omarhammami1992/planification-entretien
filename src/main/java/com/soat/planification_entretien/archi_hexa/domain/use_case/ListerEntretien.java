@@ -1,4 +1,4 @@
-package com.soat.planification_entretien.archi_hexa.domain;
+package com.soat.planification_entretien.archi_hexa.domain.use_case;
 
 import com.soat.planification_entretien.archi_hexa.application.EntretienDetailResponse;
 import com.soat.planification_entretien.archi_hexa.infrastructure.repository.EntretienRepository;
@@ -15,7 +15,7 @@ public class ListerEntretien {
     }
 
 
-    public List<EntretienDetailResponse> lister() {
+    public List<EntretienDetailResponse> execute() {
         return entretienRepository.findAll().stream().map(entretien ->
                 new EntretienDetailResponse(
                         entretien.getId(),

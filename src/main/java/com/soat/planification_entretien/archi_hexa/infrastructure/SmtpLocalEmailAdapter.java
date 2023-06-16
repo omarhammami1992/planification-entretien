@@ -2,7 +2,7 @@ package com.soat.planification_entretien.archi_hexa.infrastructure;
 
 import java.time.LocalDateTime;
 
-import com.soat.planification_entretien.archi_hexa.domain.EmailPort;
+import com.soat.planification_entretien.archi_hexa.domain.port.EmailPort;
 import org.springframework.stereotype.Service;
 
 @Service

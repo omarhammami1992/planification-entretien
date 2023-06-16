@@ -3,7 +3,7 @@ package com.soat.planification_entretien.archi_hexa.application;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.Recruteur;
+import com.soat.planification_entretien.archi_hexa.infrastructure.model.DbRecruteur;
 import com.soat.planification_entretien.archi_hexa.infrastructure.repository.RecruteurRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +31,8 @@ public class RecruteurController {
             return badRequest().build();
         }
 
-        Recruteur recruteur = new Recruteur(recruteurRequest.language(), recruteurRequest.email(), Integer.parseInt(recruteurRequest.experienceEnAnnees()));
-        Recruteur savedRecruteur = recruteurRepository.save(recruteur);
+        DbRecruteur recruteur = new DbRecruteur(recruteurRequest.language(), recruteurRequest.email(), Integer.parseInt(recruteurRequest.experienceEnAnnees()));
+        DbRecruteur savedRecruteur = recruteurRepository.save(recruteur);
 
         return created(null).body(savedRecruteur.getId());
     }

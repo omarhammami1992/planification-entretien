@@ -2,8 +2,8 @@ package com.soat.planification_entretien.archi_hexa.application;
 
 import java.util.List;
 
-import com.soat.planification_entretien.archi_hexa.domain.ListerEntretien;
-import com.soat.planification_entretien.archi_hexa.domain.PlanifierEntretien;
+import com.soat.planification_entretien.archi_hexa.domain.use_case.ListerEntretien;
+import com.soat.planification_entretien.archi_hexa.domain.use_case.PlanifierEntretien;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,13 +29,13 @@ public class EntretienController {
 
     @GetMapping("/")
     public ResponseEntity<List<EntretienDetailResponse>> findAll() {
-        return new ResponseEntity<>(listerEntretien.lister(), HttpStatus.OK);
+        return new ResponseEntity<>(listerEntretien.execute(), HttpStatus.OK);
     }
 
     @PostMapping("planifier")
     public ResponseEntity<Void> planifier(@RequestBody EntretienRequest entretienRequest) {
 
-        var planifie = planifierEntretien.planifier(entretienRequest.candidatId(), entretienRequest.recruteurId(), entretienRequest.disponibiliteDuCandidat(), entretienRequest.disponibiliteDuRecruteur());
+        var planifie = planifierEntretien.execute(entretienRequest.candidatId(), entretienRequest.recruteurId(), entretienRequest.disponibiliteDuCandidat(), entretienRequest.disponibiliteDuRecruteur());
 
         if (planifie) {
             return created(null).build();

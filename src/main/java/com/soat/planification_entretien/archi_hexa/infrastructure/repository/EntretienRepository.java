@@ -2,16 +2,16 @@ package com.soat.planification_entretien.archi_hexa.infrastructure.repository;
 
 import java.util.List;
 
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.Candidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.model.Entretien;
+import com.soat.planification_entretien.archi_hexa.infrastructure.model.DbCandidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.model.DbEntretien;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EntretienRepository extends CrudRepository<Entretien, Integer> {
-    Entretien findByCandidat(Candidat candidat);
+public interface EntretienRepository extends CrudRepository<DbEntretien, Integer> {
+    DbEntretien findByCandidat(DbCandidat candidat);
 
-    Entretien save(Entretien entretien);
+    DbEntretien save(DbEntretien entretien);
 
-    List<Entretien> findAll();
+    List<DbEntretien> findAll();
 }
