@@ -13,13 +13,13 @@ import com.soat.planification_entretien.archi_hexa.infrastructure.repository.Rec
 import org.springframework.stereotype.Service;
 
 @Service
-public class EntretienService {
+public class PlanifierEntretien {
     private final CandidatRepository candidatRepository;
     private final RecruteurRepository recruteurRepository;
     private final EntretienRepository entretienRepository;
     private final EmailPort emailPort;
 
-    public EntretienService(CandidatRepository candidatRepository, RecruteurRepository recruteurRepository, EntretienRepository entretienRepository, EmailPort emailPort) {
+    public PlanifierEntretien(CandidatRepository candidatRepository, RecruteurRepository recruteurRepository, EntretienRepository entretienRepository, EmailPort emailPort) {
         this.candidatRepository = candidatRepository;
         this.recruteurRepository = recruteurRepository;
         this.entretienRepository = entretienRepository;
@@ -42,14 +42,4 @@ public class EntretienService {
         return false;
     }
 
-    public List<EntretienDetailResponse> lister() {
-        return entretienRepository.findAll().stream().map(entretien ->
-                new EntretienDetailResponse(
-                        entretien.getId(),
-                        entretien.getCandidat().getEmail(),
-                        entretien.getRecruteur().getEmail(),
-                        entretien.getRecruteur().getLanguage(),
-                        entretien.getHoraireEntretien())
-        ).toList();
-    }
 }
