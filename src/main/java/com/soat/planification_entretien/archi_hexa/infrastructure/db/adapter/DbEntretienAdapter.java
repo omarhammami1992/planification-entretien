@@ -2,6 +2,7 @@ package com.soat.planification_entretien.archi_hexa.infrastructure.db.adapter;
 
 import com.soat.planification_entretien.archi_hexa.domain.entity.Candidat;
 import com.soat.planification_entretien.archi_hexa.domain.entity.Entretien;
+import com.soat.planification_entretien.archi_hexa.domain.entity.EntretienDetail;
 import com.soat.planification_entretien.archi_hexa.domain.entity.Recruteur;
 import com.soat.planification_entretien.archi_hexa.domain.port.EntretienPort;
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.DbCandidat;
@@ -9,6 +10,8 @@ import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.DbEnt
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.DbRecruteur;
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.EntretienRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class DbEntretienAdapter implements EntretienPort {
@@ -23,6 +26,24 @@ public class DbEntretienAdapter implements EntretienPort {
     public void save(Entretien entretien) {
        DbEntretien dbEntretien =  toDbEntretien(entretien);
        entretienRepository.save(dbEntretien);
+    }
+
+    @Override
+    public List<EntretienDetail> findAll() {
+        final List<DbEntretien> dbEntretiens = entretienRepository.findAll();
+        return dbEntretiens.stream()
+                .map(DbEntretienAdapter::toEntretienDetail)
+                .toList();
+    }
+
+    private static EntretienDetail toEntretienDetail(DbEntretien dbEntretien) {
+        return new EntretienDetail(
+                dbEntretien.getId(),
+                dbEntretien.getCandidat().getEmail(),
+                dbEntretien.getRecruteur().getEmail(),
+                dbEntretien.getRecruteur().getLanguage(),
+                dbEntretien.getHoraireEntretien()
+        );
     }
 
     private DbEntretien toDbEntretien(Entretien entretien) {
