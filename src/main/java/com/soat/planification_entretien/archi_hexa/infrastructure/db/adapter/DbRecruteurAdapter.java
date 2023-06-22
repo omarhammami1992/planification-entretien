@@ -5,6 +5,9 @@ import com.soat.planification_entretien.archi_hexa.domain.port.RecruteurPort;
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.DbRecruteur;
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.RecruteurRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
 @Repository
 public class DbRecruteurAdapter implements RecruteurPort {
 
@@ -16,8 +19,18 @@ public class DbRecruteurAdapter implements RecruteurPort {
 
     @Override
     public Integer save(Recruteur recruteur) {
-        DbRecruteur dbRecruteur = new DbRecruteur(recruteur.language(), recruteur.email(), recruteur.experienceEnAnnees());
+        DbRecruteur dbRecruteur = toDbRecruteur(recruteur);
         final DbRecruteur savedDbRecruteur = recruteurRepository.save(dbRecruteur);
         return savedDbRecruteur.getId();
+    }
+
+    private static DbRecruteur toDbRecruteur(Recruteur recruteur) {
+        return new DbRecruteur(recruteur.language(), recruteur.email(), recruteur.experienceEnAnnees());
+    }
+
+    @Override
+    public Optional<Recruteur> findById(int recruteurId) {
+        final Optional<DbRecruteur> optionalDbRecruteur = recruteurRepository.findById(recruteurId);
+        return optionalDbRecruteur.map( dbRecruteur -> new Recruteur(dbRecruteur.getId(), dbRecruteur.getLanguage(), dbRecruteur.getEmail(), dbRecruteur.getExperienceInYears()));
     }
 }

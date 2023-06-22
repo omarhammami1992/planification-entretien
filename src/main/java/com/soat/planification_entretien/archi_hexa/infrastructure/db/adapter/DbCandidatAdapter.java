@@ -6,6 +6,8 @@ import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.DbCan
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.CandidatRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class DbCandidatAdapter implements CandidatPort {
 
@@ -20,6 +22,16 @@ public class DbCandidatAdapter implements CandidatPort {
         final DbCandidat dbCandidat = toDbCandidat(candidat);
         final DbCandidat savedDbCandidat = candidatRepository.save(dbCandidat);
         return savedDbCandidat.getId();
+    }
+
+    @Override
+    public Optional<Candidat> findById(Integer id) {
+        final Optional<DbCandidat> optionalDbCandidat = candidatRepository.findById(id);
+        return optionalDbCandidat.map(DbCandidatAdapter::toCandidat);
+    }
+
+    private static Candidat toCandidat(DbCandidat dbCandidat) {
+        return new Candidat(dbCandidat.getId(), dbCandidat.getLanguage(), dbCandidat.getEmail(), dbCandidat.getExperienceInYears());
     }
 
     private static DbCandidat toDbCandidat(Candidat candidat) {

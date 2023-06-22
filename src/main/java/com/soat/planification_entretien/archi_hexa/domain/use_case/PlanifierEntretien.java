@@ -1,41 +1,41 @@
 package com.soat.planification_entretien.archi_hexa.domain.use_case;
 
-import java.time.LocalDateTime;
-
+import com.soat.planification_entretien.archi_hexa.domain.entity.Candidat;
+import com.soat.planification_entretien.archi_hexa.domain.entity.Entretien;
+import com.soat.planification_entretien.archi_hexa.domain.entity.Recruteur;
+import com.soat.planification_entretien.archi_hexa.domain.port.CandidatPort;
 import com.soat.planification_entretien.archi_hexa.domain.port.EmailPort;
-import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.DbCandidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.DbEntretien;
-import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.DbRecruteur;
-import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.CandidatRepository;
-import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.EntretienRepository;
-import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.RecruteurRepository;
+import com.soat.planification_entretien.archi_hexa.domain.port.EntretienPort;
+import com.soat.planification_entretien.archi_hexa.domain.port.RecruteurPort;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class PlanifierEntretien {
-    private final CandidatRepository candidatRepository;
-    private final RecruteurRepository recruteurRepository;
-    private final EntretienRepository entretienRepository;
+    private final CandidatPort candidatPort;
+    private final RecruteurPort recruteurPort;
+    private final EntretienPort entretienPort;
     private final EmailPort emailPort;
 
-    public PlanifierEntretien(CandidatRepository candidatRepository, RecruteurRepository recruteurRepository, EntretienRepository entretienRepository, EmailPort emailPort) {
-        this.candidatRepository = candidatRepository;
-        this.recruteurRepository = recruteurRepository;
-        this.entretienRepository = entretienRepository;
+    public PlanifierEntretien(CandidatPort candidatPort, RecruteurPort recruteurPort, EntretienPort entretienPort, EmailPort emailPort) {
+        this.candidatPort = candidatPort;
+        this.recruteurPort = recruteurPort;
+        this.entretienPort = entretienPort;
         this.emailPort = emailPort;
     }
 
     public boolean execute(int candidatId, int recruteurId, LocalDateTime dateEtHeureDisponibiliteDuCandidat, LocalDateTime dateEtHeureDisponibiliteDuRecruteur) {
-        DbCandidat candidat = candidatRepository.findById(candidatId).get();
-        DbRecruteur recruteur = recruteurRepository.findById(recruteurId).get();
+        Candidat candidat = candidatPort.findById(candidatId).get();
+        Recruteur recruteur = recruteurPort.findById(recruteurId).get();
 
-        if (recruteur.getLanguage().equals(candidat.getLanguage())
-                && recruteur.getExperienceInYears() > candidat.getExperienceInYears()
+        if (recruteur.language().equals(candidat.language())
+                && recruteur.experienceEnAnnees() > candidat.experienceEnAnnees()
                 && dateEtHeureDisponibiliteDuCandidat.equals(dateEtHeureDisponibiliteDuRecruteur)) {
-            DbEntretien entretien = DbEntretien.of(candidat, recruteur, dateEtHeureDisponibiliteDuRecruteur);
-            entretienRepository.save(entretien);
-            emailPort.envoyerUnEmailDeConfirmationAuCandidat(candidat.getEmail(), dateEtHeureDisponibiliteDuCandidat);
-            emailPort.envoyerUnEmailDeConfirmationAuRecruteur(recruteur.getEmail(), dateEtHeureDisponibiliteDuCandidat);
+            Entretien entretien = new Entretien(candidat, recruteur, dateEtHeureDisponibiliteDuRecruteur);
+            entretienPort.save(entretien);
+            emailPort.envoyerUnEmailDeConfirmationAuCandidat(candidat.email(), dateEtHeureDisponibiliteDuCandidat);
+            emailPort.envoyerUnEmailDeConfirmationAuRecruteur(recruteur.email(), dateEtHeureDisponibiliteDuCandidat);
             return true;
         }
         return false;

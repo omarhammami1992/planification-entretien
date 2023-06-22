@@ -19,6 +19,11 @@ public class DbCandidat {
     private Integer experienceInYears;
 
     public DbCandidat(String language, String email, int experienceInYears) {
+       this(null, language, email, experienceInYears);
+    }
+
+    public DbCandidat(Integer id, String language, String email, Integer experienceInYears) {
+        this.id = id;
         this.language = language;
         this.email = email;
         this.experienceInYears = experienceInYears;

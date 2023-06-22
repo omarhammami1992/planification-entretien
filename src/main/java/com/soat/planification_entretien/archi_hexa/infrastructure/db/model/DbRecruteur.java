@@ -18,10 +18,15 @@ public class DbRecruteur {
     @Column
     private Integer experienceInYears;
 
-    public DbRecruteur(String language, String email, int experienceInYears) {
+    public DbRecruteur(Integer id, String language, String email, Integer experienceInYears) {
+        this.id = id;
         this.language = language;
         this.email = email;
         this.experienceInYears = experienceInYears;
+    }
+
+    public DbRecruteur(String language, String email, Integer experienceInYears) {
+        this(null, language, email, experienceInYears);
     }
 
     public DbRecruteur() {
