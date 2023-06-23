@@ -10,6 +10,8 @@ import java.util.Map;
 import com.soat.ATest;
 import com.soat.planification_entretien.archi_hexa.application.EntretienController;
 import com.soat.planification_entretien.archi_hexa.application.EntretienDetailResponse;
+import com.soat.planification_entretien.archi_hexa.application.RecruteurController;
+import com.soat.planification_entretien.archi_hexa.application.RecruteurExperimenteResponse;
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.DbCandidat;
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.DbEntretien;
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.DbRecruteur;
@@ -122,5 +124,30 @@ public class ListingEntretienATest extends ATest {
                 entry.get("recruteur"),
                 entry.get("language"),
                 LocalDateTime.parse(entry.get("horaire"), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+    }
+
+    private RecruteurExperimenteResponse buildRecruteurExperimenteResponse(Map<String, String> entry) {
+        return new RecruteurExperimenteResponse(
+                Integer.parseInt(entry.get("id")),
+                entry.get("competence"),
+                entry.get("email"));
+    }
+
+    @Quand("on liste les recuteurs experimentés")
+    public void onListeLesRecuteursExperimentés() {
+        response = given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get(RecruteurController.PATH+ "/experimente");
+    }
+
+    @Alors("on récupères les recruteurs suivants")
+    public void onRécupèresLesRecruteursSuivants(DataTable dataTable) {
+        List<RecruteurExperimenteResponse> expectedEntretiens = dataTableTransformEntries(dataTable, this::buildRecruteurExperimenteResponse);
+
+        RecruteurExperimenteResponse[] experimenteResponses = response.then().extract()
+                .as(RecruteurExperimenteResponse[].class);
+        assertThat(Arrays.stream(experimenteResponses).toList())
+                .containsExactlyInAnyOrder(expectedEntretiens.toArray(RecruteurExperimenteResponse[]::new));
     }
 }

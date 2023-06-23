@@ -6,6 +6,7 @@ import com.soat.planification_entretien.archi_hexa.infrastructure.db.model.DbRec
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.RecruteurRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -31,6 +32,18 @@ public class DbRecruteurAdapter implements RecruteurPort {
     @Override
     public Optional<Recruteur> findById(int recruteurId) {
         final Optional<DbRecruteur> optionalDbRecruteur = recruteurRepository.findById(recruteurId);
-        return optionalDbRecruteur.map( dbRecruteur -> new Recruteur(dbRecruteur.getId(), dbRecruteur.getLanguage(), dbRecruteur.getEmail(), dbRecruteur.getExperienceInYears()));
+        return optionalDbRecruteur.map(DbRecruteurAdapter::toRecruteur);
+    }
+
+    private static Recruteur toRecruteur(DbRecruteur dbRecruteur) {
+        return new Recruteur(dbRecruteur.getId(), dbRecruteur.getLanguage(), dbRecruteur.getEmail(), dbRecruteur.getExperienceInYears());
+    }
+
+    @Override
+    public List<Recruteur> findByXp(Integer experience) {
+        final List<DbRecruteur> dbRecruteurs = recruteurRepository.findAllByExperienceInYearsGreaterThan(experience);
+        return dbRecruteurs.stream()
+                .map(DbRecruteurAdapter::toRecruteur)
+                .toList();
     }
 }
