@@ -16,7 +16,7 @@ import static org.springframework.http.ResponseEntity.*;
 @RestController
 @RequestMapping(EntretienController.PATH)
 public class EntretienController {
-    public static final String PATH = "/api/entretien/";
+    public static final String PATH = "/api/entretien";
 
     private final EntretienService entretienService;
 
@@ -24,12 +24,12 @@ public class EntretienController {
         this.entretienService = entretienService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<EntretienDetailDto>> findAll() {
         return new ResponseEntity<>(entretienService.lister(), HttpStatus.OK);
     }
 
-    @PostMapping("planifier")
+    @PostMapping("/planifier")
     public ResponseEntity<Void> planifier(@RequestBody EntretienDto entretienDto) {
 
         var planifie = entretienService.planifier(entretienDto.candidatId(), entretienDto.recruteurId(), entretienDto.disponibiliteDuCandidat(), entretienDto.disponibiliteDuRecruteur());

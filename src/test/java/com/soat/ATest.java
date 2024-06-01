@@ -1,18 +1,17 @@
 package com.soat;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.Before;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.web.server.LocalServerPort;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 public abstract class ATest {
     @Autowired

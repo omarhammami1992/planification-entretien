@@ -91,14 +91,12 @@ public class PlafinicationEntretienATest extends ATest {
         EntretienDto entretienDto = new EntretienDto(candidat.getId(), recruteur.getId(), disponibiliteDuCandidat, disponibiliteDuRecruteur);
         String body = objectMapper.writeValueAsString(entretienDto);
         initPath();
-        //@formatter:off
         response = given()
                 .log().all()
                 .header("Content-Type", ContentType.JSON)
                 .body(body)
-        .when()
+                .when()
                 .post("planifier");
-        //@formatter:on
     }
 
     @Alors("L’entretien est planifié")

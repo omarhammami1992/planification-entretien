@@ -1,5 +1,5 @@
 # language: fr
-Fonctionnalité: Planifier un entretien de recrutement chez Soat
+Fonctionnalité: Planifier un entretien de recrutement chez NeoSoft
 
   Scénario: Recruteur peut tester le candidat
     Etant donné un candidat "Java" ("candidat@email.com") avec "2" ans d’expériences qui est disponible "15/04/2019" à "15:00"

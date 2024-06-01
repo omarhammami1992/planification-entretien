@@ -29,11 +29,11 @@ public class CandidatController {
     @PostMapping("")
     public ResponseEntity<Integer> creer(@RequestBody CandidatDto candidatDto) {
 
-        if (candidatDto.language().isBlank() || !isEmail(candidatDto.email()) || candidatDto.experienceEnAnnees().isBlank() || Integer.parseInt(candidatDto.experienceEnAnnees()) < 0) {
+        if (candidatDto.language().isBlank() || !isEmail(candidatDto.email()) || candidatDto.experienceEnAnnees() < 0) {
             return badRequest().build();
         }
 
-        Candidat candidat = new Candidat(candidatDto.language(), candidatDto.email(), Integer.parseInt(candidatDto.experienceEnAnnees()));
+        Candidat candidat = new Candidat(candidatDto.language(), candidatDto.email(), candidatDto.experienceEnAnnees());
         Candidat savedCandidat = candidatRepository.save(candidat);
 
         return created(null).body(savedCandidat.getId());

@@ -1,14 +1,12 @@
 package com.soat.recruteur;
 
 
-import java.util.Optional;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.soat.ATest;
 import com.soat.planification_entretien.controller.RecruteurController;
+import com.soat.planification_entretien.controller.RecruteurDto;
 import com.soat.planification_entretien.model.Recruteur;
 import com.soat.planification_entretien.repository.RecruteurRepository;
-import com.soat.planification_entretien.controller.RecruteurDto;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
@@ -19,9 +17,10 @@ import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static io.restassured.RestAssured.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.Matchers.*;
+import java.util.Optional;
+
+import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CreationRecruteurATest extends ATest {
 
@@ -42,8 +41,8 @@ public class CreationRecruteurATest extends ATest {
         RestAssured.basePath = RecruteurController.PATH;
     }
 
-    @Etantdonné("un recruteur {string} \\({string}) avec {string} ans d’expériences")
-    public void unRecruteurAvecAnsDExpériences(String language, String email, String experienceEnAnnees) {
+    @Etantdonné("un recruteur {string} \\({string}) avec {int} ans d’expériences")
+    public void unRecruteurAvecAnsDExpériences(String language, String email, int experienceEnAnnees) {
         recruteurDto = new RecruteurDto(language, email, experienceEnAnnees);
     }
 
@@ -51,25 +50,23 @@ public class CreationRecruteurATest extends ATest {
     public void onTenteDEnregistrerLeRecruteur() throws JsonProcessingException {
         String body = objectMapper.writeValueAsString(recruteurDto);
         initPath();
-        //@formatter:off
         response = given()
                 .log().all()
                 .header("Content-Type", ContentType.JSON)
                 .body(body)
         .when()
                 .post("/");
-        //@formatter:on
     }
 
-    @Alors("le recruteur est correctement enregistré avec ses informations {string}, {string} et {string} ans d’expériences")
-    public void leRecruteurEstCorrectementEnregistréAvecSesInformationsEtAnsDExpériences(String language, String email, String experienceEnAnnees) {
+    @Alors("le recruteur est correctement enregistré avec ses informations {string}, {string} et {int} ans d’expériences")
+    public void leRecruteurEstCorrectementEnregistréAvecSesInformationsEtAnsDExpériences(String language, String email, int experienceEnAnnees) {
         response.then()
                 .statusCode(HttpStatus.SC_CREATED);
 
         final Recruteur recruteur = recruteurRepository.findById(recruteurId).get();
         assertThat(recruteur).usingRecursiveComparison()
                 .ignoringFields("id")
-                .isEqualTo(new Recruteur(language, email, Integer.parseInt(experienceEnAnnees)));
+                .isEqualTo(new Recruteur(language, email, experienceEnAnnees));
     }
 
     @Alors("l'enregistrement du recruteur est refusé")

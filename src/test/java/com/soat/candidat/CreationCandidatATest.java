@@ -1,11 +1,9 @@
 package com.soat.candidat;
 
-import java.util.Optional;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.soat.ATest;
-import com.soat.planification_entretien.controller.CandidatDto;
 import com.soat.planification_entretien.controller.CandidatController;
+import com.soat.planification_entretien.controller.CandidatDto;
 import com.soat.planification_entretien.model.Candidat;
 import com.soat.planification_entretien.repository.CandidatRepository;
 import io.cucumber.java.Before;
@@ -18,9 +16,10 @@ import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static io.restassured.RestAssured.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.Matchers.*;
+import java.util.Optional;
+
+import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CreationCandidatATest extends ATest {
 
@@ -41,8 +40,8 @@ public class CreationCandidatATest extends ATest {
         RestAssured.basePath = CandidatController.PATH;
     }
 
-    @Etantdonné("un candidat {string} \\({string}) avec {string} ans d’expériences")
-    public void unCandidatAvecAnsDExpériences(String language, String email, String experienceEnAnnees) {
+    @Etantdonné("un candidat {string} \\({string}) avec {int} ans d’expériences")
+    public void unCandidatAvecAnsDExpériences(String language, String email, int experienceEnAnnees) {
         candidatDto = new CandidatDto(language, email, experienceEnAnnees);
     }
 
@@ -50,25 +49,23 @@ public class CreationCandidatATest extends ATest {
     public void onTenteDEnregistrerLeCandidat() throws JsonProcessingException {
         String body = objectMapper.writeValueAsString(candidatDto);
         initPath();
-        //@formatter:off
         response = given()
                 .log().all()
                 .header("Content-Type", ContentType.JSON)
                 .body(body)
-        .when()
+                .when()
                 .post("/");
-        //@formatter:on
     }
 
-    @Alors("le candidat est correctement enregistré avec ses informations {string}, {string} et {string} ans d’expériences")
-    public void leCandidatEstCorrectementEnregistréAvecSesInformationsEtAnsDExpériences(String language, String email, String experienceEnAnnees) {
+    @Alors("le candidat est correctement enregistré avec ses informations {string}, {string} et {int} ans d’expériences")
+    public void leCandidatEstCorrectementEnregistréAvecSesInformationsEtAnsDExpériences(String language, String email, int experienceEnAnnees) {
         response.then()
                 .statusCode(HttpStatus.SC_CREATED);
 
         final Candidat candidat = candidatRepository.findById(candidatId).get();
         assertThat(candidat).usingRecursiveComparison()
                 .ignoringFields("id")
-                .isEqualTo(new Candidat(language, email, Integer.parseInt(experienceEnAnnees)));
+                .isEqualTo(new Candidat(language, email, experienceEnAnnees));
     }
 
     @Alors("l'enregistrement est refusé")

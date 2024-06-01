@@ -27,11 +27,11 @@ public class RecruteurController {
 
     @PostMapping("")
     public ResponseEntity<Integer> creer(@RequestBody RecruteurDto recruteurDto) {
-        if (recruteurDto.language().isBlank() || !isEmail(recruteurDto.email()) || recruteurDto.experienceEnAnnees().isBlank() || Integer.parseInt(recruteurDto.experienceEnAnnees()) < 0) {
+        if (recruteurDto.language().isBlank() || !isEmail(recruteurDto.email()) || recruteurDto.experienceEnAnnees() < 0) {
             return badRequest().build();
         }
 
-        Recruteur recruteur = new Recruteur(recruteurDto.language(), recruteurDto.email(), Integer.parseInt(recruteurDto.experienceEnAnnees()));
+        Recruteur recruteur = new Recruteur(recruteurDto.language(), recruteurDto.email(), recruteurDto.experienceEnAnnees());
         Recruteur savedRecruteur = recruteurRepository.save(recruteur);
 
         return created(null).body(savedRecruteur.getId());

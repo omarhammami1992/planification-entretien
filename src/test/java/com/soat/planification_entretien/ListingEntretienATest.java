@@ -95,13 +95,11 @@ public class ListingEntretienATest extends ATest {
 
     @Quand("on liste les tous les entretiens")
     public void onListeLesTousLesEntretiens() {
-        //@formatter:off
+        initPath();
         response = given()
-                        .contentType(ContentType.JSON)
+                .contentType(ContentType.JSON)
                 .when()
-                        .get(EntretienController.PATH);
-        //@formatter:on
-
+                .get("/");
     }
 
     @Alors("on récupères les entretiens suivants")
