@@ -2,10 +2,10 @@ package com.soat.candidat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.soat.ATest;
-import com.soat.planification_entretien.controller.CandidatController;
-import com.soat.planification_entretien.controller.CandidatDto;
-import com.soat.planification_entretien.model.Candidat;
-import com.soat.planification_entretien.repository.CandidatRepository;
+import com.soat.planification_entretien.archi_hexa.application.controller.CandidatController;
+import com.soat.planification_entretien.archi_hexa.application.dto.CandidatDto;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Candidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.repository.CandidatRepository;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;

@@ -1,11 +1,12 @@
-package com.soat.planification_entretien.service;
+package com.soat.planification_entretien.archi_hexa.infrastructure.email;
 
 import java.time.LocalDateTime;
 
+import com.soat.planification_entretien.archi_hexa.domain.EmailPort;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DummyEmailService implements EmailService {
+public class DummyEmailAdapter implements EmailPort {
     @Override
     public void envoyerUnEmailDeConfirmationAuCandidat(String email, LocalDateTime horaire) {
 

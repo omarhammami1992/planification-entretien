@@ -7,13 +7,13 @@ import java.time.format.DateTimeFormatter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.soat.ATest;
-import com.soat.planification_entretien.controller.EntretienController;
-import com.soat.planification_entretien.controller.EntretienDto;
-import com.soat.planification_entretien.model.Candidat;
-import com.soat.planification_entretien.model.Entretien;
-import com.soat.planification_entretien.model.Recruteur;
-import com.soat.planification_entretien.repository.EntretienRepository;
-import com.soat.planification_entretien.service.EmailService;
+import com.soat.planification_entretien.archi_hexa.application.controller.EntretienController;
+import com.soat.planification_entretien.archi_hexa.application.dto.EntretienDto;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Candidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Entretien;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Recruteur;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.repository.EntretienRepository;
+import com.soat.planification_entretien.archi_hexa.domain.EmailPort;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
@@ -59,7 +59,7 @@ public class PlafinicationEntretienATest extends ATest {
     private EntretienRepository entretienRepository;
 
     @Autowired
-    private EmailService emailService;
+    private EmailPort emailPort;
 
     @Before
     @Override
@@ -113,8 +113,8 @@ public class PlafinicationEntretienATest extends ATest {
 
     @Et("un mail de confirmation est envoyé au candidat et au recruteur")
     public void unMailDeConfirmationEstEnvoyéAuCandidatEtAuRecruteur() {
-        verify(emailService).envoyerUnEmailDeConfirmationAuCandidat(candidat.getEmail(), disponibiliteDuCandidat);
-        verify(emailService).envoyerUnEmailDeConfirmationAuRecruteur(recruteur.getEmail(), disponibiliteDuCandidat);
+        verify(emailPort).envoyerUnEmailDeConfirmationAuCandidat(candidat.getEmail(), disponibiliteDuCandidat);
+        verify(emailPort).envoyerUnEmailDeConfirmationAuRecruteur(recruteur.getEmail(), disponibiliteDuCandidat);
     }
 
     @Alors("L’entretien n'est pas planifié")
@@ -128,7 +128,7 @@ public class PlafinicationEntretienATest extends ATest {
 
     @Et("aucun mail de confirmation n'est envoyé au candidat ou au recruteur")
     public void aucunMailDeConfirmationNEstEnvoyéAuCandidatOuAuRecruteur() {
-        verify(emailService, never()).envoyerUnEmailDeConfirmationAuCandidat(candidat.getEmail(), disponibiliteDuCandidat);
-        verify(emailService, never()).envoyerUnEmailDeConfirmationAuRecruteur(recruteur.getEmail(), disponibiliteDuCandidat);
+        verify(emailPort, never()).envoyerUnEmailDeConfirmationAuCandidat(candidat.getEmail(), disponibiliteDuCandidat);
+        verify(emailPort, never()).envoyerUnEmailDeConfirmationAuRecruteur(recruteur.getEmail(), disponibiliteDuCandidat);
     }
 }

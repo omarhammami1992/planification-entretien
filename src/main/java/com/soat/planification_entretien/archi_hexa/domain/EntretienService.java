@@ -1,15 +1,15 @@
-package com.soat.planification_entretien.service;
+package com.soat.planification_entretien.archi_hexa.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.soat.planification_entretien.controller.EntretienDetailDto;
-import com.soat.planification_entretien.model.Candidat;
-import com.soat.planification_entretien.model.Entretien;
-import com.soat.planification_entretien.model.Recruteur;
-import com.soat.planification_entretien.repository.CandidatRepository;
-import com.soat.planification_entretien.repository.EntretienRepository;
-import com.soat.planification_entretien.repository.RecruteurRepository;
+import com.soat.planification_entretien.archi_hexa.application.dto.EntretienDetailDto;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Candidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Entretien;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Recruteur;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.repository.CandidatRepository;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.repository.EntretienRepository;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.repository.RecruteurRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,13 +17,13 @@ public class EntretienService {
     private final CandidatRepository candidatRepository;
     private final RecruteurRepository recruteurRepository;
     private final EntretienRepository entretienRepository;
-    private final EmailService emailService;
+    private final EmailPort emailPort;
 
-    public EntretienService(CandidatRepository candidatRepository, RecruteurRepository recruteurRepository, EntretienRepository entretienRepository, EmailService emailService) {
+    public EntretienService(CandidatRepository candidatRepository, RecruteurRepository recruteurRepository, EntretienRepository entretienRepository, EmailPort emailPort) {
         this.candidatRepository = candidatRepository;
         this.recruteurRepository = recruteurRepository;
         this.entretienRepository = entretienRepository;
-        this.emailService = emailService;
+        this.emailPort = emailPort;
     }
 
     public boolean planifier(int candidatId, int recruteurId, LocalDateTime dateEtHeureDisponibiliteDuCandidat, LocalDateTime dateEtHeureDisponibiliteDuRecruteur) {
@@ -35,8 +35,8 @@ public class EntretienService {
                 && dateEtHeureDisponibiliteDuCandidat.equals(dateEtHeureDisponibiliteDuRecruteur)) {
             Entretien entretien = Entretien.of(candidat, recruteur, dateEtHeureDisponibiliteDuRecruteur);
             entretienRepository.save(entretien);
-            emailService.envoyerUnEmailDeConfirmationAuCandidat(candidat.getEmail(), dateEtHeureDisponibiliteDuCandidat);
-            emailService.envoyerUnEmailDeConfirmationAuRecruteur(recruteur.getEmail(), dateEtHeureDisponibiliteDuCandidat);
+            emailPort.envoyerUnEmailDeConfirmationAuCandidat(candidat.getEmail(), dateEtHeureDisponibiliteDuCandidat);
+            emailPort.envoyerUnEmailDeConfirmationAuRecruteur(recruteur.getEmail(), dateEtHeureDisponibiliteDuCandidat);
             return true;
         }
         return false;
