@@ -9,11 +9,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.soat.ATest;
 import com.soat.planification_entretien.archi_hexa.application.controller.EntretienController;
 import com.soat.planification_entretien.archi_hexa.application.dto.EntretienDto;
-import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Candidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Entretien;
-import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Recruteur;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.CandidatEntity;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.EntretienEntity;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.RecruteurEntity;
 import com.soat.planification_entretien.archi_hexa.infrastructure.database.repository.EntretienRepository;
-import com.soat.planification_entretien.archi_hexa.domain.EmailPort;
+import com.soat.planification_entretien.archi_hexa.domain.entretien.EmailPort;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
@@ -50,9 +50,9 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ActiveProfiles("AcceptanceTest")
 public class PlafinicationEntretienATest extends ATest {
 
-    private Candidat candidat;
+    private CandidatEntity candidat;
     private LocalDateTime disponibiliteDuCandidat;
-    private Recruteur recruteur;
+    private RecruteurEntity recruteur;
     private LocalDateTime disponibiliteDuRecruteur;
 
     @Autowired
@@ -74,14 +74,14 @@ public class PlafinicationEntretienATest extends ATest {
 
     @Etantdonné("un candidat {string} \\({string}) avec {string} ans d’expériences qui est disponible {string} à {string}")
     public void unCandidatAvecAnsDExpériencesQuiEstDisponibleÀ(String language, String email, String experienceInYears, String date, String time) {
-        candidat = new Candidat(language, email, Integer.parseInt(experienceInYears));
+        candidat = new CandidatEntity(language, email, Integer.parseInt(experienceInYears));
         entityManager.persist(candidat);
         disponibiliteDuCandidat = LocalDateTime.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")));
     }
 
     @Etqu("un recruteur {string} \\({string}) qui a {string} ans d’XP qui est dispo {string} à {string}")
     public void unRecruteurQuiAAnsDXPQuiEstDispo(String language, String email, String experienceInYears, String date, String time) {
-        recruteur = new Recruteur(language, email, Integer.parseInt(experienceInYears));
+        recruteur = new RecruteurEntity(language, email, Integer.parseInt(experienceInYears));
         entityManager.persist(recruteur);
         disponibiliteDuRecruteur = LocalDateTime.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")));
     }
@@ -104,8 +104,8 @@ public class PlafinicationEntretienATest extends ATest {
         response.then()
                 .statusCode(HttpStatus.SC_CREATED);
 
-        Entretien entretien = entretienRepository.findByCandidat(candidat);
-        Entretien expectedEntretien = Entretien.of(candidat, recruteur, disponibiliteDuCandidat);
+        EntretienEntity entretien = entretienRepository.findByCandidat(candidat);
+        EntretienEntity expectedEntretien = EntretienEntity.of(candidat, recruteur, disponibiliteDuCandidat);
         assertThat(entretien).usingRecursiveComparison()
                 .ignoringFields("id")
                 .isEqualTo(expectedEntretien);
@@ -122,7 +122,7 @@ public class PlafinicationEntretienATest extends ATest {
         response.then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST);
 
-        Entretien entretien = entretienRepository.findByCandidat(candidat);
+        EntretienEntity entretien = entretienRepository.findByCandidat(candidat);
         assertThat(entretien).isNull();
     }
 

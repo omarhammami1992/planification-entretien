@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.soat.planification_entretien.archi_hexa.application.dto.EntretienDetailDto;
 import com.soat.planification_entretien.archi_hexa.application.dto.EntretienDto;
-import com.soat.planification_entretien.archi_hexa.domain.EntretienService;
+import com.soat.planification_entretien.archi_hexa.domain.entretien.EntretienService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

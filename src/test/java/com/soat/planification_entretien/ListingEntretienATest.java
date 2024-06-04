@@ -10,9 +10,9 @@ import java.util.Map;
 import com.soat.ATest;
 import com.soat.planification_entretien.archi_hexa.application.controller.EntretienController;
 import com.soat.planification_entretien.archi_hexa.application.dto.EntretienDetailDto;
-import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Candidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Entretien;
-import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Recruteur;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.CandidatEntity;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.EntretienEntity;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.RecruteurEntity;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.Alors;
@@ -29,8 +29,8 @@ import static org.assertj.core.api.Assertions.*;
 @Transactional
 public class ListingEntretienATest extends ATest {
 
-    private List<Candidat> savedCandidats = new ArrayList<>();
-    private List<Recruteur> savedRecruteurs = new ArrayList<>();
+    private List<CandidatEntity> savedCandidats = new ArrayList<>();
+    private List<RecruteurEntity> savedRecruteurs = new ArrayList<>();
 
     @Before
     @Override
@@ -45,16 +45,16 @@ public class ListingEntretienATest extends ATest {
 
     @Etantdonné("les recruteurs existants")
     public void lesRecruteursExistants(DataTable dataTable) {
-        List<Recruteur> recruteurs = dataTableTransformEntries(dataTable, this::buildRecruteur);
+        List<RecruteurEntity> recruteurs = dataTableTransformEntries(dataTable, this::buildRecruteur);
 
-        for (Recruteur recruteur : recruteurs) {
-            Recruteur saved = entityManager.persist(recruteur);
+        for (RecruteurEntity recruteur : recruteurs) {
+            RecruteurEntity saved = entityManager.persist(recruteur);
             savedRecruteurs.add(saved);
         }
     }
 
-    private Recruteur buildRecruteur(Map<String, String> entry) {
-        return new Recruteur(
+    private RecruteurEntity buildRecruteur(Map<String, String> entry) {
+        return new RecruteurEntity(
                 entry.get("language"),
                 entry.get("email"),
                 Integer.parseInt(entry.get("xp")));
@@ -62,16 +62,16 @@ public class ListingEntretienATest extends ATest {
 
     @Et("les candidats existants")
     public void lesCandidatsExistants(DataTable dataTable) {
-        List<Candidat> candidats = dataTableTransformEntries(dataTable, this::buildCandidat);
+        List<CandidatEntity> candidats = dataTableTransformEntries(dataTable, this::buildCandidat);
 
-        for (Candidat candidat : candidats) {
-            Candidat saved = entityManager.persist(candidat);
+        for (CandidatEntity candidat : candidats) {
+            CandidatEntity saved = entityManager.persist(candidat);
             savedCandidats.add(saved);
         }
     }
 
-    private Candidat buildCandidat(Map<String, String> entry) {
-        return new Candidat(
+    private CandidatEntity buildCandidat(Map<String, String> entry) {
+        return new CandidatEntity(
                 entry.get("language"),
                 entry.get("email"),
                 Integer.parseInt(entry.get("xp")));
@@ -79,15 +79,15 @@ public class ListingEntretienATest extends ATest {
 
     @Et("les entretiens existants")
     public void lesEntretiensExistants(DataTable dataTable) {
-        List<Entretien> entretiens = dataTableTransformEntries(dataTable, this::buildEntretien);
+        List<EntretienEntity> entretiens = dataTableTransformEntries(dataTable, this::buildEntretien);
 
-        for (Entretien entretien : entretiens) {
+        for (EntretienEntity entretien : entretiens) {
             entityManager.persist(entretien);
         }
     }
 
-    private Entretien buildEntretien(Map<String, String> entry) {
-        return Entretien.of(
+    private EntretienEntity buildEntretien(Map<String, String> entry) {
+        return EntretienEntity.of(
                 savedCandidats.get(0),
                 savedRecruteurs.get(0),
                 LocalDateTime.parse(entry.get("horaire"), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));

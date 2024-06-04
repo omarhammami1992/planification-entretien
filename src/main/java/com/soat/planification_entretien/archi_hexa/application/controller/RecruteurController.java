@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.soat.planification_entretien.archi_hexa.application.dto.RecruteurDto;
-import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Recruteur;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.RecruteurEntity;
 import com.soat.planification_entretien.archi_hexa.infrastructure.database.repository.RecruteurRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,8 +32,8 @@ public class RecruteurController {
             return badRequest().build();
         }
 
-        Recruteur recruteur = new Recruteur(recruteurDto.language(), recruteurDto.email(), recruteurDto.experienceEnAnnees());
-        Recruteur savedRecruteur = recruteurRepository.save(recruteur);
+        RecruteurEntity recruteur = new RecruteurEntity(recruteurDto.language(), recruteurDto.email(), recruteurDto.experienceEnAnnees());
+        RecruteurEntity savedRecruteur = recruteurRepository.save(recruteur);
 
         return created(null).body(savedRecruteur.getId());
     }

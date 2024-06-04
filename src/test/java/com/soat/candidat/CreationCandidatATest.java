@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.soat.ATest;
 import com.soat.planification_entretien.archi_hexa.application.controller.CandidatController;
 import com.soat.planification_entretien.archi_hexa.application.dto.CandidatDto;
-import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Candidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.CandidatEntity;
 import com.soat.planification_entretien.archi_hexa.infrastructure.database.repository.CandidatRepository;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.Alors;
@@ -62,10 +62,10 @@ public class CreationCandidatATest extends ATest {
         response.then()
                 .statusCode(HttpStatus.SC_CREATED);
 
-        final Candidat candidat = candidatRepository.findById(candidatId).get();
+        final CandidatEntity candidat = candidatRepository.findById(candidatId).get();
         assertThat(candidat).usingRecursiveComparison()
                 .ignoringFields("id")
-                .isEqualTo(new Candidat(language, email, experienceEnAnnees));
+                .isEqualTo(new CandidatEntity(language, email, experienceEnAnnees));
     }
 
     @Alors("l'enregistrement est refusé")
@@ -76,7 +76,7 @@ public class CreationCandidatATest extends ATest {
 
     @Et("le candidat n'est pas enregistré")
     public void leCandidatNEstPasEnregistré() {
-        final Optional<Candidat> candidat = candidatRepository.findById(candidatId);
+        final Optional<CandidatEntity> candidat = candidatRepository.findById(candidatId);
         assertThat(candidat).isEmpty();
     }
 }

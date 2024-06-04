@@ -1,12 +1,12 @@
-package com.soat.planification_entretien.archi_hexa.domain;
+package com.soat.planification_entretien.archi_hexa.domain.entretien;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import com.soat.planification_entretien.archi_hexa.application.dto.EntretienDetailDto;
-import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Candidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Entretien;
-import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.Recruteur;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.CandidatEntity;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.EntretienEntity;
+import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.RecruteurEntity;
 import com.soat.planification_entretien.archi_hexa.infrastructure.database.repository.CandidatRepository;
 import com.soat.planification_entretien.archi_hexa.infrastructure.database.repository.EntretienRepository;
 import com.soat.planification_entretien.archi_hexa.infrastructure.database.repository.RecruteurRepository;
@@ -27,13 +27,13 @@ public class EntretienService {
     }
 
     public boolean planifier(int candidatId, int recruteurId, LocalDateTime dateEtHeureDisponibiliteDuCandidat, LocalDateTime dateEtHeureDisponibiliteDuRecruteur) {
-        Candidat candidat = candidatRepository.findById(candidatId).get();
-        Recruteur recruteur = recruteurRepository.findById(recruteurId).get();
+        CandidatEntity candidat = candidatRepository.findById(candidatId).get();
+        RecruteurEntity recruteur = recruteurRepository.findById(recruteurId).get();
 
         if (recruteur.getLanguage().equals(candidat.getLanguage())
                 && recruteur.getExperienceInYears() > candidat.getExperienceInYears()
                 && dateEtHeureDisponibiliteDuCandidat.equals(dateEtHeureDisponibiliteDuRecruteur)) {
-            Entretien entretien = Entretien.of(candidat, recruteur, dateEtHeureDisponibiliteDuRecruteur);
+            EntretienEntity entretien = EntretienEntity.of(candidat, recruteur, dateEtHeureDisponibiliteDuRecruteur);
             entretienRepository.save(entretien);
             emailPort.envoyerUnEmailDeConfirmationAuCandidat(candidat.getEmail(), dateEtHeureDisponibiliteDuCandidat);
             emailPort.envoyerUnEmailDeConfirmationAuRecruteur(recruteur.getEmail(), dateEtHeureDisponibiliteDuCandidat);
