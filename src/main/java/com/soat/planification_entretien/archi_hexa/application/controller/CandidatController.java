@@ -1,8 +1,8 @@
 package com.soat.planification_entretien.archi_hexa.application.controller;
 
 import com.soat.planification_entretien.archi_hexa.application.dto.CandidatDto;
-import com.soat.planification_entretien.archi_hexa.domain.candidat.use_case.CreerCandidat;
-import com.soat.planification_entretien.archi_hexa.domain.candidat.exception.InvalideCandidatParams;
+import com.soat.planification_entretien.archi_hexa.domain.use_case.CreerCandidat;
+import com.soat.planification_entretien.archi_hexa.domain.exception.InvalideCandidatParams;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

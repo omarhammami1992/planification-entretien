@@ -13,7 +13,7 @@ import com.soat.planification_entretien.archi_hexa.infrastructure.database.entit
 import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.EntretienEntity;
 import com.soat.planification_entretien.archi_hexa.infrastructure.database.entity.RecruteurEntity;
 import com.soat.planification_entretien.archi_hexa.infrastructure.database.repository.EntretienRepository;
-import com.soat.planification_entretien.archi_hexa.domain.entretien.EmailPort;
+import com.soat.planification_entretien.archi_hexa.domain.port.EmailPort;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;

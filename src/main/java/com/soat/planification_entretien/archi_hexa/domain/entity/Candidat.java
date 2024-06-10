@@ -1,6 +1,6 @@
-package com.soat.planification_entretien.archi_hexa.domain.candidat.entity;
+package com.soat.planification_entretien.archi_hexa.domain.entity;
 
-import com.soat.planification_entretien.archi_hexa.domain.candidat.exception.InvalideCandidatParams;
+import com.soat.planification_entretien.archi_hexa.domain.exception.InvalideCandidatParams;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,6 +9,7 @@ public class Candidat {
 
     private static final String EMAIL_REGEX = "^[\\w-_.+]*[\\w-_.]@([\\w]+\\.)+[\\w]+[\\w]$";
 
+    private Integer id;
     private final String language;
     private final String email;
     private final int experienceEnAnnees;
@@ -20,6 +21,15 @@ public class Candidat {
         this.language = language;
         this.email = email;
         this.experienceEnAnnees = experienceEnAnnees;
+    }
+
+    public Candidat(Integer id, String language, String email, Integer experienceInYears) {
+        this(language, email, experienceInYears);
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getLanguage() {

@@ -1,8 +1,8 @@
 package com.soat.planification_entretien.archi_hexa.application.controller;
 
 import com.soat.planification_entretien.archi_hexa.application.dto.RecruteurDto;
-import com.soat.planification_entretien.archi_hexa.domain.recruteur.use_case.CreerRecruteur;
-import com.soat.planification_entretien.archi_hexa.domain.recruteur.exception.InvalideRecruteurParams;
+import com.soat.planification_entretien.archi_hexa.domain.use_case.CreerRecruteur;
+import com.soat.planification_entretien.archi_hexa.domain.exception.InvalideRecruteurParams;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

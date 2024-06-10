@@ -1,7 +1,7 @@
-package com.soat.planification_entretien.archi_hexa.domain.candidat.use_case;
+package com.soat.planification_entretien.archi_hexa.domain.use_case;
 
-import com.soat.planification_entretien.archi_hexa.domain.candidat.entity.Candidat;
-import com.soat.planification_entretien.archi_hexa.domain.candidat.port.CandidatPort;
+import com.soat.planification_entretien.archi_hexa.domain.entity.Candidat;
+import com.soat.planification_entretien.archi_hexa.domain.port.CandidatPort;
 import org.springframework.stereotype.Service;
 
 @Service
