@@ -10,6 +10,8 @@ import com.soat.planification_entretien.archi_hexa.infrastructure.database.entit
 import com.soat.planification_entretien.archi_hexa.infrastructure.database.repository.EntretienRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class EntretienAdapter implements EntretienPort {
     private final EntretienRepository entretienRepository;
@@ -28,5 +30,23 @@ public class EntretienAdapter implements EntretienPort {
 
         final EntretienEntity entretienEntity = EntretienEntity.of(candidatEntity, recruteurEntity, entretien.getHoraireEntretien());
         entretienRepository.save(entretienEntity);
+    }
+
+    @Override
+    public List<Entretien> findAll() {
+        final List<EntretienEntity> entretienEntities = entretienRepository.findAll();
+        return entretienEntities.stream()
+                .map(EntretienAdapter::toDomain)
+                .toList();
+    }
+
+    private static Entretien toDomain(EntretienEntity entretienEntity) {
+        final CandidatEntity candidatEntity = entretienEntity.getCandidat();
+        Candidat candidat = new Candidat(candidatEntity.getLanguage(), candidatEntity.getEmail(), candidatEntity.getExperienceInYears());
+
+        final RecruteurEntity recruteurEntity = entretienEntity.getRecruteur();
+        Recruteur recruteur = new Recruteur(recruteurEntity.getLanguage(), recruteurEntity.getEmail(), recruteurEntity.getExperienceInYears());
+
+        return new Entretien(entretienEntity.getId(), candidat, recruteur, entretienEntity.getHoraireEntretien());
     }
 }

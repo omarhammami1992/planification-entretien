@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.soat.planification_entretien.archi_hexa.application.dto.EntretienDetailDto;
 import com.soat.planification_entretien.archi_hexa.application.dto.EntretienDto;
+import com.soat.planification_entretien.archi_hexa.domain.entity.Entretien;
 import com.soat.planification_entretien.archi_hexa.domain.use_case.ListerEntretien;
 import com.soat.planification_entretien.archi_hexa.domain.use_case.PlanifierEntretien;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,10 @@ public class EntretienController {
 
     @GetMapping
     public ResponseEntity<List<EntretienDetailDto>> findAll() {
-        return new ResponseEntity<>(listerEntretien.execute(), HttpStatus.OK);
+        final List<Entretien> entretiens = listerEntretien.execute();
+        final List<EntretienDetailDto> entretienDetailDtos = entretiens.stream()
+                .map(EntretienController::toEntretienDetailDto).toList();
+        return new ResponseEntity<>(entretienDetailDtos, HttpStatus.OK);
     }
 
     @PostMapping("/planifier")
@@ -45,5 +49,14 @@ public class EntretienController {
             return badRequest().build();
         }
 
+    }
+
+    private static EntretienDetailDto toEntretienDetailDto(Entretien entretien) {
+        return new EntretienDetailDto(
+                entretien.getId(),
+                entretien.getCandidat().getEmail(),
+                entretien.getRecruteur().getEmail(),
+                entretien.getRecruteur().getLanguage(),
+                entretien.getHoraireEntretien());
     }
 }
