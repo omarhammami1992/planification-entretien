@@ -54,8 +54,8 @@ public class CreationRecruteurATest extends ATest {
                 .log().all()
                 .header("Content-Type", ContentType.JSON)
                 .body(body)
-        .when()
-                .post("/");
+                .when()
+                .post("");
     }
 
     @Alors("le recruteur est correctement enregistré avec ses informations {string}, {string} et {int} ans d’expériences")

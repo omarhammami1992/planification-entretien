@@ -1,10 +1,5 @@
 package com.soat.planification_entretien;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.soat.ATest;
 import com.soat.planification_entretien.controller.EntretienController;
@@ -12,14 +7,12 @@ import com.soat.planification_entretien.controller.EntretienDto;
 import com.soat.planification_entretien.model.Candidat;
 import com.soat.planification_entretien.model.Entretien;
 import com.soat.planification_entretien.model.Recruteur;
+import com.soat.planification_entretien.repository.CandidatRepository;
 import com.soat.planification_entretien.repository.EntretienRepository;
+import com.soat.planification_entretien.repository.RecruteurRepository;
 import com.soat.planification_entretien.service.EmailService;
 import io.cucumber.java.Before;
-import io.cucumber.java.fr.Alors;
-import io.cucumber.java.fr.Et;
-import io.cucumber.java.fr.Etantdonné;
-import io.cucumber.java.fr.Etqu;
-import io.cucumber.java.fr.Quand;
+import io.cucumber.java.fr.*;
 import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -34,10 +27,16 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import static io.restassured.RestAssured.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED)
 @Transactional
@@ -59,6 +58,12 @@ public class PlafinicationEntretienATest extends ATest {
     private EntretienRepository entretienRepository;
 
     @Autowired
+    private RecruteurRepository recruteurRepository;
+
+    @Autowired
+    private CandidatRepository candidatRepository;
+
+    @Autowired
     private EmailService emailService;
 
     @Before
@@ -75,14 +80,14 @@ public class PlafinicationEntretienATest extends ATest {
     @Etantdonné("un candidat {string} \\({string}) avec {string} ans d’expériences qui est disponible {string} à {string}")
     public void unCandidatAvecAnsDExpériencesQuiEstDisponibleÀ(String language, String email, String experienceInYears, String date, String time) {
         candidat = new Candidat(language, email, Integer.parseInt(experienceInYears));
-        entityManager.persist(candidat);
+        candidatRepository.save(candidat);
         disponibiliteDuCandidat = LocalDateTime.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")));
     }
 
     @Etqu("un recruteur {string} \\({string}) qui a {string} ans d’XP qui est dispo {string} à {string}")
     public void unRecruteurQuiAAnsDXPQuiEstDispo(String language, String email, String experienceInYears, String date, String time) {
         recruteur = new Recruteur(language, email, Integer.parseInt(experienceInYears));
-        entityManager.persist(recruteur);
+        recruteurRepository.save(recruteur);
         disponibiliteDuRecruteur = LocalDateTime.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")));
     }
 

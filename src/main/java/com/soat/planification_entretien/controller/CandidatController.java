@@ -1,8 +1,5 @@
 package com.soat.planification_entretien.controller;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.soat.planification_entretien.model.Candidat;
 import com.soat.planification_entretien.repository.CandidatRepository;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +8,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.http.ResponseEntity.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.created;
 
 @RestController
 @RequestMapping(CandidatController.PATH)

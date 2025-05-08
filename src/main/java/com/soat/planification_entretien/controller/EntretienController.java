@@ -5,11 +5,7 @@ import java.util.List;
 import com.soat.planification_entretien.service.EntretienService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.ResponseEntity.*;
 
@@ -26,7 +22,8 @@ public class EntretienController {
 
     @GetMapping
     public ResponseEntity<List<EntretienDetailDto>> findAll() {
-        return new ResponseEntity<>(entretienService.lister(), HttpStatus.OK);
+        List<EntretienDetailDto> entretienDetails = entretienService.lister();
+        return new ResponseEntity<>(entretienDetails, HttpStatus.OK);
     }
 
     @PostMapping("/planifier")

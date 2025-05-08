@@ -1,14 +1,11 @@
 spring:
   jpa:
-    database: POSTGRESQL
+    database: h2
     show-sql: true
     hibernate:
       ddl-auto: create-drop
-  application:
-    name: cars
   datasource:
-    driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/entretien
+    url: jdbc:h2:mem:entretien
     username: user
     password: password
 

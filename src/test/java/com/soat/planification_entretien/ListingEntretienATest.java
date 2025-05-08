@@ -99,7 +99,7 @@ public class ListingEntretienATest extends ATest {
         response = given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get("/");
+                .get("");
     }
 
     @Alors("on récupères les entretiens suivants")

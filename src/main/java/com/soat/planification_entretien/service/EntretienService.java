@@ -11,6 +11,7 @@ import com.soat.planification_entretien.repository.CandidatRepository;
 import com.soat.planification_entretien.repository.EntretienRepository;
 import com.soat.planification_entretien.repository.RecruteurRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EntretienService {
