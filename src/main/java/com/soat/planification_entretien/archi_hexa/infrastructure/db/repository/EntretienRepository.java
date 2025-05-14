@@ -1,9 +1,9 @@
-package com.soat.planification_entretien.repository;
+package com.soat.planification_entretien.archi_hexa.infrastructure.db.repository;
 
 import java.util.List;
 
-import com.soat.planification_entretien.model.Candidat;
-import com.soat.planification_entretien.model.Entretien;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.Candidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.Entretien;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

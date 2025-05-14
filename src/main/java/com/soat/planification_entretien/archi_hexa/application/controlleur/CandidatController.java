@@ -1,7 +1,8 @@
-package com.soat.planification_entretien.controller;
+package com.soat.planification_entretien.archi_hexa.application.controlleur;
 
-import com.soat.planification_entretien.model.Candidat;
-import com.soat.planification_entretien.repository.CandidatRepository;
+import com.soat.planification_entretien.archi_hexa.application.dto.CandidatDto;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.Candidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.CandidatRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -1,17 +1,16 @@
-package com.soat.planification_entretien.service;
+package com.soat.planification_entretien.archi_hexa.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.soat.planification_entretien.controller.EntretienDetailDto;
-import com.soat.planification_entretien.model.Candidat;
-import com.soat.planification_entretien.model.Entretien;
-import com.soat.planification_entretien.model.Recruteur;
-import com.soat.planification_entretien.repository.CandidatRepository;
-import com.soat.planification_entretien.repository.EntretienRepository;
-import com.soat.planification_entretien.repository.RecruteurRepository;
+import com.soat.planification_entretien.archi_hexa.application.dto.EntretienDetailDto;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.Candidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.Entretien;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.Recruteur;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.CandidatRepository;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.EntretienRepository;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.RecruteurRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EntretienService {

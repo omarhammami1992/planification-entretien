@@ -1,4 +1,4 @@
-package com.soat.planification_entretien.model;
+package com.soat.planification_entretien.archi_hexa.infrastructure.db.entity;
 
 import java.time.LocalDateTime;
 import jakarta.persistence.Column;
