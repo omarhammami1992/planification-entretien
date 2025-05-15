@@ -10,9 +10,9 @@ import java.util.Map;
 import com.soat.ATest;
 import com.soat.planification_entretien.archi_hexa.application.controlleur.EntretienController;
 import com.soat.planification_entretien.archi_hexa.application.dto.EntretienDetailDto;
-import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.Candidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.Entretien;
-import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.Recruteur;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.DBCandidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.DBEntretien;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.DBRecruteur;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.Alors;
@@ -29,8 +29,8 @@ import static org.assertj.core.api.Assertions.*;
 @Transactional
 public class ListingEntretienATest extends ATest {
 
-    private List<Candidat> savedCandidats = new ArrayList<>();
-    private List<Recruteur> savedRecruteurs = new ArrayList<>();
+    private List<DBCandidat> savedCandidats = new ArrayList<>();
+    private List<DBRecruteur> savedRecruteurs = new ArrayList<>();
 
     @Before
     @Override
@@ -45,16 +45,16 @@ public class ListingEntretienATest extends ATest {
 
     @Etantdonné("les recruteurs existants")
     public void lesRecruteursExistants(DataTable dataTable) {
-        List<Recruteur> recruteurs = dataTableTransformEntries(dataTable, this::buildRecruteur);
+        List<DBRecruteur> recruteurs = dataTableTransformEntries(dataTable, this::buildRecruteur);
 
-        for (Recruteur recruteur : recruteurs) {
-            Recruteur saved = entityManager.persist(recruteur);
+        for (DBRecruteur recruteur : recruteurs) {
+            DBRecruteur saved = entityManager.persist(recruteur);
             savedRecruteurs.add(saved);
         }
     }
 
-    private Recruteur buildRecruteur(Map<String, String> entry) {
-        return new Recruteur(
+    private DBRecruteur buildRecruteur(Map<String, String> entry) {
+        return new DBRecruteur(
                 entry.get("language"),
                 entry.get("email"),
                 Integer.parseInt(entry.get("xp")));
@@ -62,16 +62,16 @@ public class ListingEntretienATest extends ATest {
 
     @Et("les candidats existants")
     public void lesCandidatsExistants(DataTable dataTable) {
-        List<Candidat> candidats = dataTableTransformEntries(dataTable, this::buildCandidat);
+        List<DBCandidat> candidats = dataTableTransformEntries(dataTable, this::buildCandidat);
 
-        for (Candidat candidat : candidats) {
-            Candidat saved = entityManager.persist(candidat);
+        for (DBCandidat candidat : candidats) {
+            DBCandidat saved = entityManager.persist(candidat);
             savedCandidats.add(saved);
         }
     }
 
-    private Candidat buildCandidat(Map<String, String> entry) {
-        return new Candidat(
+    private DBCandidat buildCandidat(Map<String, String> entry) {
+        return new DBCandidat(
                 entry.get("language"),
                 entry.get("email"),
                 Integer.parseInt(entry.get("xp")));
@@ -79,15 +79,15 @@ public class ListingEntretienATest extends ATest {
 
     @Et("les entretiens existants")
     public void lesEntretiensExistants(DataTable dataTable) {
-        List<Entretien> entretiens = dataTableTransformEntries(dataTable, this::buildEntretien);
+        List<DBEntretien> entretiens = dataTableTransformEntries(dataTable, this::buildEntretien);
 
-        for (Entretien entretien : entretiens) {
+        for (DBEntretien entretien : entretiens) {
             entityManager.persist(entretien);
         }
     }
 
-    private Entretien buildEntretien(Map<String, String> entry) {
-        return Entretien.of(
+    private DBEntretien buildEntretien(Map<String, String> entry) {
+        return DBEntretien.of(
                 savedCandidats.get(0),
                 savedRecruteurs.get(0),
                 LocalDateTime.parse(entry.get("horaire"), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));

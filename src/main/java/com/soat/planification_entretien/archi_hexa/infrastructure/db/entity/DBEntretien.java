@@ -9,41 +9,41 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Entretien {
+public class DBEntretien {
     @Id
     @GeneratedValue
     private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "candidat_id")
-    private Candidat candidat;
+    private DBCandidat candidat;
 
     @Column
     private LocalDateTime horaireEntretien;
 
     @ManyToOne
     @JoinColumn(name = "recruteur_id")
-    private Recruteur recruteur;
+    private DBRecruteur recruteur;
 
-    private Entretien(Candidat candidat, Recruteur recruteur, LocalDateTime horaire) {
+    private DBEntretien(DBCandidat candidat, DBRecruteur recruteur, LocalDateTime horaire) {
         this.candidat = candidat;
         this.recruteur = recruteur;
         this.horaireEntretien = horaire;
     }
 
-    public Entretien() {
+    public DBEntretien() {
 
     }
 
-    public static Entretien of(Candidat candidat, Recruteur recruteur, LocalDateTime horaire) {
-        return new Entretien(candidat, recruteur, horaire);
+    public static DBEntretien of(DBCandidat candidat, DBRecruteur recruteur, LocalDateTime horaire) {
+        return new DBEntretien(candidat, recruteur, horaire);
     }
 
-    public Candidat getCandidat() {
+    public DBCandidat getCandidat() {
         return candidat;
     }
 
-    public Recruteur getRecruteur() {
+    public DBRecruteur getRecruteur() {
         return recruteur;
     }
 

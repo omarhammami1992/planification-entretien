@@ -1,12 +1,13 @@
-package com.soat.planification_entretien.archi_hexa.domain;
+package com.soat.planification_entretien.archi_hexa.domain.use_case;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import com.soat.planification_entretien.archi_hexa.application.dto.EntretienDetailDto;
-import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.Candidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.Entretien;
-import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.Recruteur;
+import com.soat.planification_entretien.archi_hexa.domain.port.EmailPort;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.DBCandidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.DBEntretien;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.DBRecruteur;
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.CandidatRepository;
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.EntretienRepository;
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.RecruteurRepository;
@@ -17,9 +18,9 @@ public class EntretienService {
     private final CandidatRepository candidatRepository;
     private final RecruteurRepository recruteurRepository;
     private final EntretienRepository entretienRepository;
-    private final EmailService emailService;
+    private final EmailPort emailService;
 
-    public EntretienService(CandidatRepository candidatRepository, RecruteurRepository recruteurRepository, EntretienRepository entretienRepository, EmailService emailService) {
+    public EntretienService(CandidatRepository candidatRepository, RecruteurRepository recruteurRepository, EntretienRepository entretienRepository, EmailPort emailService) {
         this.candidatRepository = candidatRepository;
         this.recruteurRepository = recruteurRepository;
         this.entretienRepository = entretienRepository;
@@ -27,13 +28,13 @@ public class EntretienService {
     }
 
     public boolean planifier(int candidatId, int recruteurId, LocalDateTime dateEtHeureDisponibiliteDuCandidat, LocalDateTime dateEtHeureDisponibiliteDuRecruteur) {
-        Candidat candidat = candidatRepository.findById(candidatId).get();
-        Recruteur recruteur = recruteurRepository.findById(recruteurId).get();
+        DBCandidat candidat = candidatRepository.findById(candidatId).get();
+        DBRecruteur recruteur = recruteurRepository.findById(recruteurId).get();
 
         if (recruteur.getLanguage().equals(candidat.getLanguage())
                 && recruteur.getExperienceInYears() > candidat.getExperienceInYears()
                 && dateEtHeureDisponibiliteDuCandidat.equals(dateEtHeureDisponibiliteDuRecruteur)) {
-            Entretien entretien = Entretien.of(candidat, recruteur, dateEtHeureDisponibiliteDuRecruteur);
+            DBEntretien entretien = DBEntretien.of(candidat, recruteur, dateEtHeureDisponibiliteDuRecruteur);
             entretienRepository.save(entretien);
             emailService.envoyerUnEmailDeConfirmationAuCandidat(candidat.getEmail(), dateEtHeureDisponibiliteDuCandidat);
             emailService.envoyerUnEmailDeConfirmationAuRecruteur(recruteur.getEmail(), dateEtHeureDisponibiliteDuCandidat);

@@ -1,12 +1,13 @@
 package com.soat.planification_entretien.archi_hexa.infrastructure.db.entity;
 
 import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity
-public class Recruteur {
+public class DBCandidat {
     @Id
     @GeneratedValue
     private Integer id;
@@ -18,13 +19,13 @@ public class Recruteur {
     @Column
     private Integer experienceInYears;
 
-    public Recruteur(String language, String email, int experienceInYears) {
+    public DBCandidat(String language, String email, int experienceInYears) {
         this.language = language;
         this.email = email;
         this.experienceInYears = experienceInYears;
     }
 
-    public Recruteur() {
+    public DBCandidat() {
 
     }
 

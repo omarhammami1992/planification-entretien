@@ -4,13 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.soat.ATest;
 import com.soat.planification_entretien.archi_hexa.application.controlleur.EntretienController;
 import com.soat.planification_entretien.archi_hexa.application.dto.EntretienDto;
-import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.Candidat;
-import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.Entretien;
-import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.Recruteur;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.DBCandidat;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.DBEntretien;
+import com.soat.planification_entretien.archi_hexa.infrastructure.db.entity.DBRecruteur;
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.CandidatRepository;
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.EntretienRepository;
 import com.soat.planification_entretien.archi_hexa.infrastructure.db.repository.RecruteurRepository;
-import com.soat.planification_entretien.archi_hexa.domain.EmailService;
+import com.soat.planification_entretien.archi_hexa.domain.port.EmailPort;
 import io.cucumber.java.Before;
 import io.cucumber.java.fr.*;
 import io.cucumber.spring.CucumberContextConfiguration;
@@ -49,9 +49,9 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ActiveProfiles("AcceptanceTest")
 public class PlafinicationEntretienATest extends ATest {
 
-    private Candidat candidat;
+    private DBCandidat candidat;
     private LocalDateTime disponibiliteDuCandidat;
-    private Recruteur recruteur;
+    private DBRecruteur recruteur;
     private LocalDateTime disponibiliteDuRecruteur;
 
     @Autowired
@@ -64,7 +64,7 @@ public class PlafinicationEntretienATest extends ATest {
     private CandidatRepository candidatRepository;
 
     @Autowired
-    private EmailService emailService;
+    private EmailPort emailService;
 
     @Before
     @Override
@@ -79,14 +79,14 @@ public class PlafinicationEntretienATest extends ATest {
 
     @Etantdonné("un candidat {string} \\({string}) avec {string} ans d’expériences qui est disponible {string} à {string}")
     public void unCandidatAvecAnsDExpériencesQuiEstDisponibleÀ(String language, String email, String experienceInYears, String date, String time) {
-        candidat = new Candidat(language, email, Integer.parseInt(experienceInYears));
+        candidat = new DBCandidat(language, email, Integer.parseInt(experienceInYears));
         candidatRepository.save(candidat);
         disponibiliteDuCandidat = LocalDateTime.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")));
     }
 
     @Etqu("un recruteur {string} \\({string}) qui a {string} ans d’XP qui est dispo {string} à {string}")
     public void unRecruteurQuiAAnsDXPQuiEstDispo(String language, String email, String experienceInYears, String date, String time) {
-        recruteur = new Recruteur(language, email, Integer.parseInt(experienceInYears));
+        recruteur = new DBRecruteur(language, email, Integer.parseInt(experienceInYears));
         recruteurRepository.save(recruteur);
         disponibiliteDuRecruteur = LocalDateTime.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")));
     }
@@ -109,8 +109,8 @@ public class PlafinicationEntretienATest extends ATest {
         response.then()
                 .statusCode(HttpStatus.SC_CREATED);
 
-        Entretien entretien = entretienRepository.findByCandidat(candidat);
-        Entretien expectedEntretien = Entretien.of(candidat, recruteur, disponibiliteDuCandidat);
+        DBEntretien entretien = entretienRepository.findByCandidat(candidat);
+        DBEntretien expectedEntretien = DBEntretien.of(candidat, recruteur, disponibiliteDuCandidat);
         assertThat(entretien).usingRecursiveComparison()
                 .ignoringFields("id")
                 .isEqualTo(expectedEntretien);
@@ -127,7 +127,7 @@ public class PlafinicationEntretienATest extends ATest {
         response.then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST);
 
-        Entretien entretien = entretienRepository.findByCandidat(candidat);
+        DBEntretien entretien = entretienRepository.findByCandidat(candidat);
         assertThat(entretien).isNull();
     }
 
